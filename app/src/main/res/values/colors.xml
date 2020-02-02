@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="planeat_green">#75BA60</color>
+    <color name="planeat_orange">#FF8403</color>
+    <color name="planeat_grey">#4F4F4F</color>
+    <color name="white">#FFFFFF</color>
 </resources>

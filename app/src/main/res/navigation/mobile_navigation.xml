@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_agenda">
+
+    <fragment
+        android:id="@+id/navigation_agenda"
+        android:name="com.planeat.front_end.mainactivity_fragments.agenda.AgendaFragment"
+        android:label="Agenda"
+        tools:layout="@layout/fragment_groceries" />
+
+    <fragment
+        android:id="@+id/navigation_groceries"
+        android:name="com.planeat.front_end.mainactivity_fragments.groceries.GroceriesFragment"
+        android:label="Groceries"
+        tools:layout="@layout/fragment_agenda" />
+
+    <fragment
+        android:id="@+id/navigation_meals"
+        android:name="com.planeat.front_end.mainactivity_fragments.meals.MealsFragment"
+        android:label="Meals"
+        tools:layout="@layout/fragment_meals" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.planeat.front_end.mainactivity_fragments.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
