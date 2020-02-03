@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">front_end</string>
-    <string name="server_url">front_end</string>
+    <string name="app_name">Plan Eat</string>
+    <string name="server_url">https://quick-restapi.glitch.me</string>
 </resources>

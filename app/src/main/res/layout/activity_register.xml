@@ -7,11 +7,13 @@
     android:background="@color/planeat_green">
 
     <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:padding="30dp"
+        android:padding="50dp"
         android:background="@android:drawable/dialog_holo_light_frame"
         >
 
@@ -91,6 +93,7 @@
             android:layout_margin="4dp"
             android:padding="10dp"
             android:text="Sign Up"
+            android:onClick="onClick"
             android:background="@color/planeat_green"
             android:textColor="@color/white"/>
 
