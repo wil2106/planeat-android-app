@@ -1,4 +1,4 @@
-package com.planeat.front_end.api_service;
+package com.planeat.front_end.api_access;
 
 import android.content.Context;
 
@@ -35,4 +35,5 @@ public class NetworkSingleton {
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }
+
 }
