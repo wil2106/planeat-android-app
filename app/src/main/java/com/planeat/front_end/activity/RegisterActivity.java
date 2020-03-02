@@ -43,14 +43,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         //when user push register button
         if (v.getId() == R.id.btn_register){
-            final String login = ((EditText)findViewById(R.id.editText_login)).getText().toString();
             final String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
             final String email = ((EditText)findViewById(R.id.editText_email)).getText().toString();
             final String firstname = ((EditText)findViewById(R.id.editText_firstName)).getText().toString();
             final String lastname = ((EditText)findViewById(R.id.editText_lastName)).getText().toString();
 
-            if(login.trim().length()>0 && password.trim().length()>0 && email.trim().length()>0 && firstname.trim().length()>0 && lastname.trim().length()>0){
-                register(login, password,email,firstname,lastname);
+            if(password.trim().length()>0 && email.trim().length()>0 && firstname.trim().length()>0 && lastname.trim().length()>0){
+                register(password,email,firstname,lastname);
             }else{
                 //Error message
                 new AlertDialog.Builder(RegisterActivity.this).setTitle("Alert").setMessage("Please fill in all required fields")
@@ -68,10 +67,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    public void register(final String login,final String password, final String email,final String firstName,final String lastName){
+    public void register(final String password, final String email,final String firstName,final String lastName){
 
 
-        String url = getString(R.string.server_url)+"/register";
+        String url = getString(R.string.server_url)+"/users/signup";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 //if response status = 200
                 new Response.Listener<String>()
@@ -119,12 +118,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("login", login);
-                params.put("password", password);
-                params.put("email", email);
-                params.put("firstName", firstName);
-                params.put("lastName", lastName);
+                params.put("user_prenom", firstName);
+                params.put("user_nom", lastName);
+                params.put("user_password", password);
+                params.put("user_mail", email);
                 return params;
+
             }
         };
         NetworkSingleton.getInstance(getApplicationContext()).addToRequestQueue(postRequest);
