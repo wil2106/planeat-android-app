@@ -7,4 +7,5 @@
     <color name="planeat_orange">#FF8403</color>
     <color name="planeat_grey">#4F4F4F</color>
     <color name="white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
 </resources>
