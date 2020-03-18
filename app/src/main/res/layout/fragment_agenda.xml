@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Button
+                    android:id="@+id/buttonAgendaPrevious"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
@@ -33,11 +34,13 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/dayTextView1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="M"/>
                     <TextView
+                        android:id="@+id/dayNumTextView1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -50,11 +53,13 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/dayTextView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="T"/>
                     <TextView
+                        android:id="@+id/dayNumTextView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -67,11 +72,13 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/dayTextView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="W"/>
                     <TextView
+                        android:id="@+id/dayNumTextView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -84,11 +91,13 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/dayTextView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="T"/>
                     <TextView
+                        android:id="@+id/dayNumTextView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -101,11 +110,13 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/dayTextView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="F"/>
                     <TextView
+                        android:id="@+id/dayNumTextView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -118,11 +129,13 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/dayTextView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="S"/>
                     <TextView
+                        android:id="@+id/dayNumTextView6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -135,17 +148,20 @@
                     android:orientation="vertical"
                     android:gravity="center">
                     <TextView
+                        android:id="@+id/dayTextView7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="S"/>
                     <TextView
+                        android:id="@+id/dayNumTextView7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="7"/>
                 </LinearLayout>
                 <Button
+                    android:id="@+id/buttonAgendaNext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="next"
@@ -154,6 +170,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/currentDayTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
