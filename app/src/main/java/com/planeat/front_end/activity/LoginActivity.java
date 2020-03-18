@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -38,12 +41,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if (v.getId() == R.id.btn_login){
 
-            final String login = ((EditText)findViewById(R.id.editText_login)).getText().toString();
+            /* Retrieve layout objects */
+            final String mail = ((EditText)findViewById(R.id.editText_mail)).getText().toString();
             final String password = ((EditText)findViewById(R.id.editText_password)).getText().toString();
 
-
-            if(login.trim().length()>0 && password.trim().length()>0){
-                login(login,password);
+            /* Check if not empty */
+            if(mail.trim().length()>0 && password.trim().length()>0){
+                login(mail,password);
             }else{
                 //Error message
                 new AlertDialog.Builder(LoginActivity.this).setTitle("Alert").setMessage("Please fill in all required fields")
@@ -60,9 +64,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public void login(final String login,final String password){
+    public void login(final String mail,final String password){
 
-        String url = getString(R.string.server_url)+"/login";
+
+        final ProgressBar progressBar = findViewById(R.id.progressBar);
+        /* Show progress bar */
+        progressBar.setVisibility(View.VISIBLE);
+
+        String url = getString(R.string.server_url)+"/auth/login";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -71,21 +80,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         JSONObject responseObject = null;
                         try {
                             responseObject = new JSONObject(response);
-                            Toast.makeText(getApplicationContext(),responseObject.toString(), Toast.LENGTH_LONG).show();
+
+                            /* Store access token in shared preferences */
+                            SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE );
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("access_token",responseObject.getString("access_token"));
+                            editor.apply();
+
+                            /*  Hide progress bar */
+                            progressBar.setVisibility(View.INVISIBLE);
+
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            finish();//remove activity from the stack
+                            startActivity(intent);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        finish();//remove activity from the stack
-                        startActivity(intent);
 
+                        /* IF we want to persist credentials :
+                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                                .setNegativeButton("No", dialogClickListener).show();
+                                */
                     }
                 },
                 new Response.ErrorListener()
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        /*  Hide progress bar */
+                        progressBar.setVisibility(View.INVISIBLE);
                         new AlertDialog.Builder(LoginActivity.this).setTitle("Alert").setMessage("Login or password is incorrect, please retry")
                                 .setPositiveButton("OK", null)
                                 .show();
@@ -96,11 +121,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<String, String>();
-                params.put("login", login);
+                params.put("username", mail);
                 params.put("password", password);
+                params.put("grant_type","password");
+                params.put("client_id","test");
+                params.put("client_secret","test");
                 return params;
             }
         };
         NetworkSingleton.getInstance(getApplicationContext()).addToRequestQueue(postRequest);
     }
+
+
+    /* IF we want to persist credentials :
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+
+                    SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE );
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("access_token",responseObject.getString("access_token"));
+                    editor.apply();
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
+    };*/
+
 }
