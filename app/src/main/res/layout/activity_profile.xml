@@ -5,9 +5,16 @@
     android:background="@color/planeat_green">
 
     <TextView
+        android:id="@+id/profileFillerTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="THIS WILL BE A PROFILE PAGE" />
+    <TextView
+        android:id="@+id/testTextView"
+        android:layout_below="@id/profileFillerTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="product name"/>
 
     <Button
         android:id="@+id/buttonProfileReturn"
