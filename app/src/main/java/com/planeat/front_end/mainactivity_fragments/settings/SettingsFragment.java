@@ -3,6 +3,7 @@ package com.planeat.front_end.mainactivity_fragments.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,8 @@ import com.planeat.front_end.R;
 import com.planeat.front_end.activity.LoginActivity;
 import com.planeat.front_end.activity.PremiumSubActivity;
 import com.planeat.front_end.activity.ProfileActivity;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class SettingsFragment extends Fragment {
 
@@ -50,10 +53,15 @@ public class SettingsFragment extends Fragment {
             }
         });*/
         Switch notifications = (Switch) root.findViewById(R.id.switchNotifications);
+        final SharedPreferences sharedPreferences = activity.getSharedPreferences("shared_prefs", MODE_PRIVATE );
+        notifications.setChecked(sharedPreferences.getBoolean("notifications", false));
         notifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // HERE WE NEED TO PUT A BOOLEAN EQUAL TO isChecked FOR NOTIFICATIONS ALLOWED OR NOT AS PERSISTENT DATA, the isChecked will be
                 // true if the switch is in the On position
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("notifications",isChecked);
+                editor.apply();
             }
         });
         Button profile = (Button) root.findViewById(R.id.buttonProfile);
