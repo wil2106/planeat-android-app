@@ -23,6 +23,7 @@ public class AgendaFragment extends Fragment {
         agendaViewModel =
                 ViewModelProviders.of(this).get(AgendaViewModel.class);
         View root = inflater.inflate(R.layout.fragment_agenda, container, false);
+        /*
         final TextView textView = root.findViewById(R.id.text_agenda);
         agendaViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -30,6 +31,7 @@ public class AgendaFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        */
         return root;
     }
 }

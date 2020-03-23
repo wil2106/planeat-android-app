@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/planeat_green">
-
+    <!--
     <LinearLayout
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -17,67 +17,106 @@
         android:background="@android:drawable/dialog_holo_light_frame"
         android:layout_margin="50dp"
         >
-
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/logo"
-            android:layout_height="250dp"
-            android:layout_width="250dp"
-            android:layout_gravity="center"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login" />
-
-        <EditText
-            android:id="@+id/editText_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginBottom="10dp"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password" />
-
-        <EditText
-            android:id="@+id/editText_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:layout_marginBottom="10dp"
-            />
-
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:padding="10dp"
-            android:text="Login"
-            android:onClick="onClick"
-            android:background="@color/planeat_green"
-            android:textColor="@color/white"/>
-
-        <TextView
-            android:id="@+id/textView_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="No account yet ? Register now !"
-            android:onClick="onClick"
-            android:clickable="true"
-            android:textColor="@color/planeat_green"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            />
-
-
     </LinearLayout>
+    -->
+
+        <androidx.cardview.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardElevation="5dp">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="50dp"
+                >
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/logo"
+                    android:layout_height="250dp"
+                    android:layout_width="250dp"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mail" />
+
+                <EditText
+                    android:id="@+id/editText_mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:layout_marginBottom="10dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Password" />
+
+                <EditText
+                    android:id="@+id/editText_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPassword"
+                    android:layout_marginBottom="10dp"
+                    />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/planeat_green"
+                    android:id="@+id/btn_login"
+                    android:clickable="true"
+                    android:onClick="onClick">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Login"
+                        android:id="@+id/loginButton"
+                        android:layout_centerInParent="true"
+                        android:width="200dp"
+                        android:background="@android:color/transparent"
+                        android:textAllCaps="false"
+                        android:clickable="false"/>
+
+                    <ProgressBar
+                        android:visibility="invisible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/progressBar"
+                        android:layout_gravity="right"
+                        android:layout_alignTop="@+id/loginButton"
+                        android:layout_alignRight="@+id/loginButton"
+                        android:layout_alignEnd="@+id/loginButton"
+                        />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/textView_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No account yet ? Register now !"
+                    android:onClick="onClick"
+                    android:clickable="true"
+                    android:textColor="@color/planeat_green"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

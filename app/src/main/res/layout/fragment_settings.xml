@@ -1,19 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/planeat_green">
 
-    <TextView
-        android:id="@+id/text_settings"
+    <LinearLayout android:id="@+id/settingsTitleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="50dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_settings_24dp"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/settingsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textSize="30dp"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/settingsTitleLayout"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/profileButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@color/very_light_grey">
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="Account:"
+                android:textSize="20dp"
+                android:background="@null"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/default_text_color"
+                />
+
+            <Button
+                android:id="@+id/buttonProfile"
+                android:textAllCaps="false"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile >"
+                android:textSize="20dp"
+                android:background="@null"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/default_text_color"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/disconnectButtonLayout"
+            android:layout_below="@id/profileButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@color/very_light_grey">
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="false"
+                    android:text="Disconnect:"
+                    android:textSize="20dp"
+                    android:background="@null"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/default_text_color"
+                    />
+
+                <Button
+                    android:id="@+id/buttonDisconnect"
+                    android:textAllCaps="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login >"
+                    android:textSize="20dp"
+                    android:background="@null"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/default_text_color"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/notificationSwitchLayout"
+            android:layout_below="@id/disconnectButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@color/very_light_grey">
+
+                <TextView
+                    android:id="@+id/notificationsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:text="Notifications:"
+                    android:textSize="20dp"
+                    />
+
+                <Switch
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="25dp"
+                    android:id="@+id/switchNotifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp">
+
+            <Button
+                android:id="@+id/buttonSettingsPremium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/golden_yellow"
+                android:textColor="#B33A3A"
+                android:padding="20dp"
+                android:textSize="20dp"
+                android:text="Subscribe to Premium !" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
