@@ -66,7 +66,6 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         }, new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 testTV.setText("Something went wrong");

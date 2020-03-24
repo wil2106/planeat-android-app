@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -19,10 +20,24 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.planeat.front_end.R;
 import com.planeat.front_end.activity.LoginActivity;
 import com.planeat.front_end.activity.PremiumSubActivity;
 import com.planeat.front_end.activity.ProfileActivity;
+import com.planeat.front_end.utils.NetworkSingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -30,6 +45,7 @@ public class SettingsFragment extends Fragment {
 
     private SettingsViewModel settingsViewModel;
     Activity activity;
+    String token;
 
     @Override
     public void onAttach(Context context) {
@@ -52,8 +68,49 @@ public class SettingsFragment extends Fragment {
                 textView.setText(s);
             }
         });*/
-        Switch notifications = (Switch) root.findViewById(R.id.switchNotifications);
+        final TextView accountNameTV = (TextView) root.findViewById(R.id.settingsAccountTextView);
+        String url = getString(R.string.server_url) + "/users/profile";
+        /* Get access token from shared preferences */
         final SharedPreferences sharedPreferences = activity.getSharedPreferences("shared_prefs", MODE_PRIVATE );
+        token = sharedPreferences.getString("access_token", null);
+        JsonArrayRequest testRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    int indexMailChar = -1;
+                    String user_mail = response.getJSONObject(0).getString("user_mail");
+                    indexMailChar = user_mail.indexOf('.');
+                    if (indexMailChar != -1) {
+                        user_mail = (char)(user_mail.charAt(0) - 32) + user_mail.substring(1, indexMailChar) + " " + (char)(user_mail.charAt(indexMailChar + 1) - 32) + "."; // error if mail ends with '.', but clearly shouldn't happen
+                    }
+                    else {
+                        indexMailChar = user_mail.indexOf('@');
+                        if (indexMailChar != -1) {
+                            user_mail = user_mail.substring(0, indexMailChar);
+                        }
+                    }
+                    accountNameTV.setText(user_mail);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                accountNameTV.setText("User");
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + token);
+                return params;
+            }
+        };
+        NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(testRequest);
+        Switch notifications = (Switch) root.findViewById(R.id.switchNotifications);
         notifications.setChecked(sharedPreferences.getBoolean("notifications", false));
         notifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -64,7 +121,8 @@ public class SettingsFragment extends Fragment {
                 editor.apply();
             }
         });
-        Button profile = (Button) root.findViewById(R.id.buttonProfile);
+
+        RelativeLayout profile = (RelativeLayout) root.findViewById(R.id.buttonProfile);
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +130,8 @@ public class SettingsFragment extends Fragment {
                 startActivity(profileIntent);
             }
         });
-        Button disconnect = (Button) root.findViewById(R.id.buttonDisconnect);
+
+        RelativeLayout disconnect = (RelativeLayout) root.findViewById(R.id.buttonDisconnect);
         disconnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +141,7 @@ public class SettingsFragment extends Fragment {
                 startActivity(disconnectIntent);
             }
         });
+
         Button premiumSub = (Button) root.findViewById(R.id.buttonSettingsPremium);
         // premiumSub.setVisibility(View.GONE); DO THIS IF USER IS ALREADY PREMIUM, ELSE THE NEXT BLOCK
         premiumSub.setOnClickListener(new View.OnClickListener() {
