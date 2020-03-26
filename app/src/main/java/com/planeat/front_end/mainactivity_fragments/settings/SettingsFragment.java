@@ -73,6 +73,7 @@ public class SettingsFragment extends Fragment {
         /* Get access token from shared preferences */
         final SharedPreferences sharedPreferences = activity.getSharedPreferences("shared_prefs", MODE_PRIVATE );
         token = sharedPreferences.getString("access_token", null);
+        final Button premiumSub = (Button) root.findViewById(R.id.buttonSettingsPremium);
         JsonArrayRequest testRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -91,6 +92,8 @@ public class SettingsFragment extends Fragment {
                         }
                     }
                     accountNameTV.setText(user_mail);
+                    if (response.getJSONObject(0).getInt("user_ispremium") != 0)
+                        premiumSub.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -142,7 +145,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        Button premiumSub = (Button) root.findViewById(R.id.buttonSettingsPremium);
         // premiumSub.setVisibility(View.GONE); DO THIS IF USER IS ALREADY PREMIUM, ELSE THE NEXT BLOCK
         premiumSub.setOnClickListener(new View.OnClickListener() {
             @Override
