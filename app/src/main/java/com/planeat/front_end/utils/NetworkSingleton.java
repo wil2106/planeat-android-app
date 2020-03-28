@@ -6,6 +6,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
+
 public class NetworkSingleton {
     private static NetworkSingleton instance;
     private RequestQueue requestQueue;
@@ -13,6 +15,9 @@ public class NetworkSingleton {
     private static int agendaDatesRange = 0;
     private static String agendaCurrentDay = "00";
     private static String agendaCurrentMonth = "00";
+    private static ArrayList<Integer> breakFastIds = new ArrayList<>();
+    private static ArrayList<Integer> lunchIds = new ArrayList<>();
+    private static ArrayList<Integer> dinnerIds = new ArrayList<>();
 
     private NetworkSingleton(Context context) {
         ctx = context;
@@ -58,6 +63,18 @@ public class NetworkSingleton {
     public String getAgendaCurrentMonth() {
         return agendaCurrentMonth;
     }
+
+    public void addBreakfastId(int id) { breakFastIds.add(id); }
+
+    public int getBreakfastId(int index) { return breakFastIds.get(index); }
+
+    public void addLunchId(int id) { lunchIds.add(id); }
+
+    public int getLunchId(int index) { return lunchIds.get(index); }
+
+    public void addDinnerId(int id) { dinnerIds.add(id); }
+
+    public int getDinnerId(int index) { return dinnerIds.get(index); }
 
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);

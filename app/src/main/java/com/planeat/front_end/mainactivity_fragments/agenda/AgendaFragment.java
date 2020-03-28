@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -245,15 +247,21 @@ public class AgendaFragment extends Fragment {
                             Pair<String, Integer> mealInfo = new Pair<>(response.getJSONObject(i).getString("recipe_name"),
                                                                         response.getJSONObject(i).getInt("recipe_nb_servings")); // example filling
                             switch (mealType) {
-                                case "breakfast":
+                                case "breakfast": {
+                                    NetworkSingleton.getInstance(activity).addBreakfastId(response.getJSONObject(i).getInt("recipe_id");
                                     breakfastInfos.add(mealInfo);
                                     break;
-                                case "lunch":
+                                }
+                                case "lunch": {
+                                    NetworkSingleton.getInstance(activity).addLunchId(response.getJSONObject(i).getInt("recipe_id");
                                     lunchInfos.add(mealInfo);
                                     break;
-                                case "dinner":
+                                }
+                                case "dinner": {
+                                    NetworkSingleton.getInstance(activity).addDinnerId(response.getJSONObject(i).getInt("recipe_id");
                                     dinnerInfos.add(mealInfo);
                                     break;
+                                }
                                 default:
                                     Log.i("meh", "One meal from the planning had an invalid meal_type");
                             }
@@ -299,13 +307,58 @@ public class AgendaFragment extends Fragment {
         RecyclerView lunchRecyclerView = (RecyclerView) root.findViewById(R.id.lunchRecyclerView);
         RecyclerView dinnerRecyclerView = (RecyclerView) root.findViewById(R.id.dinnerRecyclerView);
         breakfastRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        AgendaRecyclerViewAdapter adapter = new AgendaRecyclerViewAdapter(activity, breakfastInfos);
-        breakfastRecyclerView.setAdapter(adapter);
+        final AgendaRecyclerViewAdapter breakfastAdapter = new AgendaRecyclerViewAdapter(activity, breakfastInfos);
+        breakfastRecyclerView.setAdapter(breakfastAdapter);
         lunchRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        adapter = new AgendaRecyclerViewAdapter(activity, lunchInfos);
-        lunchRecyclerView.setAdapter(adapter);
+        final AgendaRecyclerViewAdapter lunchAdapter = new AgendaRecyclerViewAdapter(activity, lunchInfos);
+        lunchRecyclerView.setAdapter(lunchAdapter);
         dinnerRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        adapter = new AgendaRecyclerViewAdapter(activity, dinnerInfos);
-        dinnerRecyclerView.setAdapter(adapter);
+        final AgendaRecyclerViewAdapter dinnerAdapter = new AgendaRecyclerViewAdapter(activity, dinnerInfos);
+        dinnerRecyclerView.setAdapter(dinnerAdapter);
+        ItemTouchHelper breakfastHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //this handles planning entry deletion on swiping left
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
+                int position = target.getAdapterPosition();
+                //HERE THE DELETE REQUEST
+                breakfastInfos.remove(position);
+                breakfastAdapter.notifyDataSetChanged();
+            }
+        });
+        breakfastHelper.attachToRecyclerView(breakfastRecyclerView);
+        ItemTouchHelper lunchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //this handles planning entry deletion on swiping left
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
+                int position = target.getAdapterPosition();
+                //HERE THE DELETE REQUEST
+                lunchInfos.remove(position);
+                lunchAdapter.notifyDataSetChanged();
+            }
+        });
+        lunchHelper.attachToRecyclerView(lunchRecyclerView);
+        ItemTouchHelper dinnerHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //this handles planning entry deletion on swiping left
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
+                int position = target.getAdapterPosition();
+                //HERE THE DELETE REQUEST
+                dinnerInfos.remove(position);
+                dinnerAdapter.notifyDataSetChanged();
+            }
+        });
+        dinnerHelper.attachToRecyclerView(dinnerRecyclerView);
     }
 }
