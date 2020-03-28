@@ -23,13 +23,13 @@ public class MealsFragment extends Fragment {
         mealsViewModel =
                 ViewModelProviders.of(this).get(MealsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_meals, container, false);
-        final TextView textView = root.findViewById(R.id.text_meals);
+        /*final TextView textView = root.findViewById(R.id.text_meals);
         mealsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
         return root;
     }
 }

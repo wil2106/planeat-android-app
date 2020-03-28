@@ -2,9 +2,14 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#FF8403</color>
     <color name="planeat_green">#75BA60</color>
     <color name="planeat_orange">#FF8403</color>
     <color name="planeat_grey">#4F4F4F</color>
+    <color name="very_light_grey">#e8e8e8</color>
+    <color name="default_text_color">#757575</color>
+    <color name="golden_yellow">#FFDF00</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
 </resources>

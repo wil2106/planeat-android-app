@@ -6,109 +6,95 @@
     android:layout_height="match_parent"
     android:background="@color/planeat_green">
 
-    <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
+
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:padding="50dp"
-        android:background="@android:drawable/dialog_holo_light_frame"
-        >
-
-        <TextView
+        card_view:cardCornerRadius="4dp"
+        card_view:cardBackgroundColor="@android:color/white"
+        card_view:cardElevation="5dp">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login" />
+            android:layout_height="match_parent"
+            android:padding="50dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mail" />
 
-        <EditText
-            android:id="@+id/editText_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginBottom="10dp"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password" />
+            <EditText
+                android:id="@+id/editText_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_marginBottom="10dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password" />
 
-        <EditText
-            android:id="@+id/editText_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:layout_marginBottom="10dp"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Email" />
-
-
-        <EditText
-            android:id="@+id/editText_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:layout_marginBottom="10dp"
-            />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="First name" />
+            <EditText
+                android:id="@+id/editText_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:layout_marginBottom="10dp"
+                />
 
 
-        <EditText
-            android:id="@+id/editText_firstName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginBottom="10dp"
-            />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/planeat_green"
+                android:id="@+id/btn_register"
+                android:clickable="true"
+                android:onClick="onClick">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Last name" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Register"
+                    android:id="@+id/registerButton"
+                    android:layout_centerInParent="true"
+                    android:width="200dp"
+                    android:background="@android:color/transparent"
+                    android:textAllCaps="false"
+                    android:clickable="false"/>
+
+                <ProgressBar
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/progressBar"
+                    android:layout_gravity="right"
+                    android:layout_alignTop="@+id/registerButton"
+                    android:layout_alignRight="@+id/registerButton"
+                    android:layout_alignEnd="@+id/registerButton"
+                    />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textView_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Already registered ? Login now !"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:textColor="@color/planeat_green"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 
-        <EditText
-            android:id="@+id/editText_lastName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginBottom="10dp"
-            />
-
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:padding="10dp"
-            android:text="Sign Up"
-            android:onClick="onClick"
-            android:background="@color/planeat_green"
-            android:textColor="@color/white"/>
-
-        <TextView
-            android:id="@+id/textView_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Already registered ? Login now !"
-            android:onClick="onClick"
-            android:clickable="true"
-            android:textColor="@color/planeat_green"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            />
-
-    </LinearLayout>
 
 </RelativeLayout>

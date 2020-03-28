@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Plan Eat</string>
-    <string name="server_url">https://quick-restapi.glitch.me</string>
+    <string name="server_url">https://planeat-nodejs-backend.appspot.com</string>
 </resources>

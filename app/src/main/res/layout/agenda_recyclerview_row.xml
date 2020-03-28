@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="1dp"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="@color/very_light_grey" >
+
+    <TextView
+        android:id="@+id/agendaRecipeNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:text="blablabla"
+        android:textColor="@color/black"/>
+
+    <RelativeLayout
+        android:layout_below="@id/agendaRecipeNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/agendaRecipeNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="10"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_toRightOf="@id/agendaRecipeNumberTextView"
+            android:paddingTop="6dp"
+            android:paddingLeft="4dp"
+            android:id="@+id/imageViewAgendaNBPpl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_person_outline_black_18dp"/>
+    </RelativeLayout>
+
+</RelativeLayout>
