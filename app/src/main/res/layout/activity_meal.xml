@@ -5,27 +5,44 @@
     android:layout_height="match_parent"
     android:background="@color/planeat_green">
 
-    <TextView
-        android:id="@+id/profileFillerTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="THIS WILL BE A PROFILE PAGE" />
-    <TextView
-        android:id="@+id/MealNameTextView"
-        android:layout_below="@id/profileFillerTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="product name"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/buttonMealsReturn"
-        android:textAllCaps="false"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Return"
-        android:textSize="20dp"
-        android:layout_marginRight="20dp"
-        android:textColor="@color/default_text_color"/>
+        <RelativeLayout
+            android:id="@+id/buttonProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@color/very_light_grey"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <ImageView
+                android:id="@+id/buttonMealReturn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/baseline_arrow_back_black_18dp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:id="@+id/mealNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meal details"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

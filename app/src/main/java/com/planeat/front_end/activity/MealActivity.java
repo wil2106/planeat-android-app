@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -35,19 +36,17 @@ public class MealActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal);
         recipeId = getIntent().getStringExtra("recipeId");
-        Button returnBtn = (Button) findViewById(R.id.buttonMealsReturn);
+        ImageView returnBtn = (ImageView) findViewById(R.id.buttonMealReturn);
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent(MealActivity.this, MealsFragment.class);
+                Intent returnIntent = new Intent(MealActivity.this, MainActivity.class);
                 startActivity(returnIntent);
             }
         });
 
         String url = getString(R.string.server_url) + "/recipes/" + recipeId;
-        final TextView mealNameTV = (TextView) findViewById(R.id.MealNameTextView);
-
-        Log.i("truc", recipeId);
+        final TextView mealNameTV = (TextView) findViewById(R.id.mealNameTextView);
 
         /* Get access token from shared preferences */
         SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE );
