@@ -50,7 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(returnIntent);
             }
         });
-        String url = getString(R.string.server_url) + "/products/1";
+        String url = getString(R.string.server_url) + "/users/profile";
         final TextView testTV = (TextView) findViewById(R.id.testTextView);
         /* Get access token from shared preferences */
         SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE );
@@ -60,13 +60,12 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    testTV.setText(response.getJSONObject(0).getString("product_name"));
+                    testTV.setText(response.getJSONObject(0).getString("user_mail"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 testTV.setText("Something went wrong");

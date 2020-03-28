@@ -28,6 +28,7 @@
                     android:text="previous"/>
 
                 <LinearLayout
+                    android:id="@+id/dateLayout1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -47,6 +48,7 @@
                         android:text="1"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/dateLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -66,6 +68,7 @@
                         android:text="2"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/dateLayout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -85,6 +88,7 @@
                         android:text="3"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/dateLayout4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -104,6 +108,7 @@
                         android:text="4"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/dateLayout5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -123,6 +128,7 @@
                         android:text="5"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/dateLayout6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -142,6 +148,7 @@
                         android:text="6"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/dateLayout7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -182,6 +189,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <ImageView
+                android:paddingTop="11dp"
+                android:paddingLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/coffee"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -192,23 +205,28 @@
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
                 android:textColor="@color/planeat_green"
                 android:backgroundTint="@color/white"
                 android:text="Add" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/list_breakfast"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/breakfastRecyclerView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <ImageView
+                android:paddingTop="11dp"
+                android:paddingLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/pasta"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -218,21 +236,28 @@
                 android:layout_margin="10dp"/>
 
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:textColor="@color/planeat_green"
+                android:backgroundTint="@color/white"
                 android:text="Add" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/list_lunch"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lunchRecyclerView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <ImageView
+                android:paddingTop="11dp"
+                android:paddingLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/noodles"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -242,17 +267,17 @@
                 android:layout_margin="10dp"/>
 
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:color="@color/white"
+                android:textColor="@color/planeat_green"
+                android:backgroundTint="@color/white"
                 android:text="Add" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/list_dinner"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dinnerRecyclerView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </RelativeLayout>
