@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -87,6 +88,54 @@ public class AgendaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(7);
+                fillDates(root);
+            }
+        });
+        LinearLayout layoutDate2 = root.findViewById(R.id.dateLayout2);
+        LinearLayout layoutDate3 = root.findViewById(R.id.dateLayout3);
+        LinearLayout layoutDate4 = root.findViewById(R.id.dateLayout4);
+        LinearLayout layoutDate5 = root.findViewById(R.id.dateLayout5);
+        LinearLayout layoutDate6 = root.findViewById(R.id.dateLayout6);
+        LinearLayout layoutDate7 = root.findViewById(R.id.dateLayout7);
+        layoutDate2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(1);
+                fillDates(root);
+            }
+        });
+        layoutDate3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(2);
+                fillDates(root);
+            }
+        });
+        layoutDate4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(3);
+                fillDates(root);
+            }
+        });
+        layoutDate5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(4);
+                fillDates(root);
+            }
+        });
+        layoutDate6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(5);
+                fillDates(root);
+            }
+        });
+        layoutDate7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(6);
                 fillDates(root);
             }
         });
