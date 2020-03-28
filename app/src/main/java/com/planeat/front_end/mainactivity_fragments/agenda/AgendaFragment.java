@@ -2,6 +2,7 @@ package com.planeat.front_end.mainactivity_fragments.agenda;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -20,20 +21,34 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.planeat.front_end.R;
 import com.planeat.front_end.utils.AgendaRecyclerViewAdapter;
 import com.planeat.front_end.utils.NetworkSingleton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class AgendaFragment extends Fragment {
 
     private AgendaViewModel agendaViewModel;
     Activity activity;
+    String token;
 
     @Override
     public void onAttach(Context context) {
@@ -75,32 +90,7 @@ public class AgendaFragment extends Fragment {
                 fillDates(root);
             }
         });
-        ArrayList<Pair<String, Integer>> breakfastInfos = new ArrayList<>(); // we fill the arraylist that will be used by the recyclerview containing the info
-        ArrayList<Pair<String, Integer>> lunchInfos = new ArrayList<>();
-        ArrayList<Pair<String, Integer>> dinnerInfos = new ArrayList<>();
-        //HERE THE REQUEST AND PROPER FILLING
-        Pair<String, Integer> breakfastInfo = new Pair<>("pancakes", 1);
-        breakfastInfos.add(breakfastInfo);
-        Pair<String, Integer> breakfastInfo2 = new Pair<>("smoothie", 1);
-        breakfastInfos.add(breakfastInfo2);
-        Pair<String, Integer> lunchInfo = new Pair<>("Poulet au boulgour", 4);
-        lunchInfos.add(lunchInfo);
-        Pair<String, Integer> dinnerInfo = new Pair<>("crosets aux lardons, cheddar et oignons", 2);
-        dinnerInfos.add(dinnerInfo);
-        Pair<String, Integer> dinnerInfo2 = new Pair<>("Verrines parfumée à la violette", 4);
-        dinnerInfos.add(dinnerInfo2);
-        RecyclerView breakfastRecyclerView = (RecyclerView) root.findViewById(R.id.breakfastRecyclerView);
-        RecyclerView lunchRecyclerView = (RecyclerView) root.findViewById(R.id.lunchRecyclerView);
-        RecyclerView dinnerRecyclerView = (RecyclerView) root.findViewById(R.id.dinnerRecyclerView);
-        breakfastRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        AgendaRecyclerViewAdapter adapter = new AgendaRecyclerViewAdapter(activity, breakfastInfos);
-        breakfastRecyclerView.setAdapter(adapter);
-        lunchRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        adapter = new AgendaRecyclerViewAdapter(activity, lunchInfos);
-        lunchRecyclerView.setAdapter(adapter);
-        dinnerRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        adapter = new AgendaRecyclerViewAdapter(activity, dinnerInfos);
-        dinnerRecyclerView.setAdapter(adapter);
+        fillRecipes(root);
         return root;
     }
 
@@ -128,6 +118,8 @@ public class AgendaFragment extends Fragment {
         dayNumTV1.setText(sdfNum.format(d));
         TextView completeDateTV = root.findViewById(R.id.currentDayTextView);
         completeDateTV.setText(DateFormat.format("EEEE", d) + " " + sdfNum.format(d) + "th " + DateFormat.format("MMMM", d));
+        NetworkSingleton.getInstance(activity).setAgendaCurrentDay(sdfNum.format(d));
+        NetworkSingleton.getInstance(activity).setAgendaCurrentMonth(DateFormat.format("MM", d).toString());
         calendar.add(Calendar.DAY_OF_YEAR, 1);
         d = calendar.getTime();
         dayTV2.setText(sdf.format(d));
@@ -152,5 +144,119 @@ public class AgendaFragment extends Fragment {
         d = calendar.getTime();
         dayTV7.setText(sdf.format(d));
         dayNumTV7.setText(sdfNum.format(d));
+    }
+
+    private void fillRecipes(View root) {
+        String url = getString(R.string.server_url) + "/users/profile";
+        /* Get access token from shared preferences */
+        final SharedPreferences sharedPreferences = activity.getSharedPreferences("shared_prefs", MODE_PRIVATE );
+        token = sharedPreferences.getString("access_token", null);
+        JsonArrayRequest profileGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("user_id", response.getJSONObject(0).getInt("user_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("meh", "failed to get user_id from server");
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + token);
+                return params;
+            }
+        };
+        NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(profileGetRequest);
+        final ArrayList<Pair<String, Integer>> breakfastInfos = new ArrayList<>(); // we fill the arraylist that will be used by the recyclerview containing the info
+        final ArrayList<Pair<String, Integer>> lunchInfos = new ArrayList<>();
+        final ArrayList<Pair<String, Integer>> dinnerInfos = new ArrayList<>();
+        /*String url2 = getString(R.string.server_url) + "/planning";
+        JsonArrayRequest planningGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date;
+                    for (int i = 0; i < response.length(); ++i) {
+                        date = format.parse(response.getJSONObject(i).getJSONArray("planning").getJSONObject(0).getString("date"));
+                        if (DateFormat.format("MM", date).toString().equals(NetworkSingleton.getInstance(activity).getAgendaCurrentMonth()) &&
+                                DateFormat.format("dd", date).equals(NetworkSingleton.getInstance(activity).getAgendaCurrentDay())) {
+                            String mealType = response.getJSONObject(i).getJSONArray("planning").getJSONObject(0).getJSONObject("meal_type").getString("name");
+                            Pair<String, Integer> mealInfo = new Pair<>(response.getJSONObject(i).getString("recipe_name"),
+                                                                        response.getJSONObject(i).getInt("recipe_nb_servings")); // example filling
+                            switch (mealType) {
+                                case "breakfast":
+                                    breakfastInfos.add(mealInfo);
+                                    break;
+                                case "lunch":
+                                    lunchInfos.add(mealInfo);
+                                    break;
+                                case "dinner":
+                                    dinnerInfos.add(mealInfo);
+                                    break;
+                                default:
+                                    Log.i("meh", "One meal from the planning had an invalid meal_type");
+                            }
+                        }
+                    }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("meh", "failed to get user_id from server");
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + token);
+                return params;
+            }
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("user_id", "" + sharedPreferences.getInt("user_id", -1));
+                return params;
+            }
+        };
+        NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(profileGetRequest);*/
+        Pair<String, Integer> breakfastInfo = new Pair<>("pancakes", 1); // example filling
+        breakfastInfos.add(breakfastInfo);
+        Pair<String, Integer> breakfastInfo2 = new Pair<>("smoothie", 1);
+        breakfastInfos.add(breakfastInfo2);
+        Pair<String, Integer> lunchInfo = new Pair<>("Poulet au boulgour", 4);
+        lunchInfos.add(lunchInfo);
+        Pair<String, Integer> dinnerInfo = new Pair<>("crosets aux lardons, cheddar et oignons", 2);
+        dinnerInfos.add(dinnerInfo);
+        Pair<String, Integer> dinnerInfo2 = new Pair<>("Verrines parfumée à la violette", 4);
+        dinnerInfos.add(dinnerInfo2);
+        RecyclerView breakfastRecyclerView = (RecyclerView) root.findViewById(R.id.breakfastRecyclerView);
+        RecyclerView lunchRecyclerView = (RecyclerView) root.findViewById(R.id.lunchRecyclerView);
+        RecyclerView dinnerRecyclerView = (RecyclerView) root.findViewById(R.id.dinnerRecyclerView);
+        breakfastRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        AgendaRecyclerViewAdapter adapter = new AgendaRecyclerViewAdapter(activity, breakfastInfos);
+        breakfastRecyclerView.setAdapter(adapter);
+        lunchRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        adapter = new AgendaRecyclerViewAdapter(activity, lunchInfos);
+        lunchRecyclerView.setAdapter(adapter);
+        dinnerRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        adapter = new AgendaRecyclerViewAdapter(activity, dinnerInfos);
+        dinnerRecyclerView.setAdapter(adapter);
     }
 }

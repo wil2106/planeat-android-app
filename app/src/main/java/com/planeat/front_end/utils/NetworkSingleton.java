@@ -11,6 +11,8 @@ public class NetworkSingleton {
     private RequestQueue requestQueue;
     private static Context ctx;
     private static int agendaDatesRange = 0;
+    private static String agendaCurrentDay = "00";
+    private static String agendaCurrentMonth = "00";
 
     private NetworkSingleton(Context context) {
         ctx = context;
@@ -39,6 +41,22 @@ public class NetworkSingleton {
 
     public int getAgendaDatesRange() {
         return agendaDatesRange;
+    }
+
+    public void setAgendaCurrentDay(String day) {
+        agendaCurrentDay = day;
+    }
+
+    public String getAgendaCurrentDay() {
+        return agendaCurrentDay;
+    }
+
+    public void setAgendaCurrentMonth(String month) {
+        agendaCurrentMonth = month;
+    }
+
+    public String getAgendaCurrentMonth() {
+        return agendaCurrentMonth;
     }
 
     public <T> void addToRequestQueue(Request<T> req) {

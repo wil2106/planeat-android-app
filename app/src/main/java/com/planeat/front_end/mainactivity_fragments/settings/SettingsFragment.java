@@ -74,7 +74,7 @@ public class SettingsFragment extends Fragment {
         final SharedPreferences sharedPreferences = activity.getSharedPreferences("shared_prefs", MODE_PRIVATE );
         token = sharedPreferences.getString("access_token", null);
         final Button premiumSub = (Button) root.findViewById(R.id.buttonSettingsPremium);
-        JsonArrayRequest testRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest profileGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
             @Override
             public void onResponse(JSONArray response) {
@@ -112,7 +112,8 @@ public class SettingsFragment extends Fragment {
                 return params;
             }
         };
-        NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(testRequest);
+        NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(profileGetRequest);
+
         Switch notifications = (Switch) root.findViewById(R.id.switchNotifications);
         notifications.setChecked(sharedPreferences.getBoolean("notifications", false));
         notifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
