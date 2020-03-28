@@ -1,17 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:id="@+id/rowlayout"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
-    <!--
-    items for a single row of RecyclerView
-    -->
-    <TextView
-        android:id="@+id/recipe_name"
-        android:layout_width="wrap_content"
+    android:background="@color/planeat_green">
+
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textSize="20sp" />
-</LinearLayout>
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/buttonMeal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@color/very_light_grey"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <ImageView
+                android:id="@+id/imageViewMeal"
+                android:layout_width="38dp"
+                android:layout_height="47dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/dish" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/imageViewMeal"
+                android:layout_marginLeft="20dp">
+                <TextView
+                    android:id="@+id/MealNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meal Name"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/MealPrepTimeTextView"
+                    android:layout_below="@id/MealNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meal time"
+                    android:textSize="17dp" />
+                <TextView
+                    android:id="@+id/MealPersonTextView"
+                    android:layout_below="@id/MealNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/MealPrepTimeTextView"
+                    android:text="persons"
+                    android:textSize="17dp" />
+
+            </RelativeLayout>
+            <TextView
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=">"
+                android:textSize="30dp"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/black"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

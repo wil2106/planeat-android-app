@@ -1,11 +1,15 @@
 package com.planeat.front_end.mainactivity_fragments.meals;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,10 +23,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.planeat.front_end.R;
+import com.planeat.front_end.activity.MealActivity;
 import com.planeat.front_end.utils.NetworkSingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +41,17 @@ import static android.content.Context.MODE_PRIVATE;
 public class MealsFragment extends Fragment {
 
     private MealsViewModel mealsViewModel;
+    Activity activity;
     String token;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity){
+            activity =(Activity) context; // here, we get the instance of the current activity to use its functions
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -61,11 +77,7 @@ public class MealsFragment extends Fragment {
         token = sharedPreferences.getString("access_token", null);
 
 
-        //test name et description recette 1
-        //final TextView mealNameTV = (TextView) root.findViewById(R.id.mealsNameTextView);
-        //final TextView mealDescriptionTV = (TextView) root.findViewById(R.id.mealsDescriptionTextView);
-
-        final List<String> recipeList = new ArrayList();
+        final List<JSONObject> recipeList = new ArrayList();
 
         final RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.list);
         // set a LinearLayoutManager with default vertical orientation
@@ -79,7 +91,7 @@ public class MealsFragment extends Fragment {
                 try {
 
                     for(int i = 0; i<10; i++){
-                        recipeList.add(response.getJSONObject(i).getString("recipe_name"));
+                        recipeList.add(response.getJSONObject(i));
                     }
 
                     //  call the constructor of MealsAdapter to send the reference and data to Adapter
@@ -94,6 +106,7 @@ public class MealsFragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 Log.i("meh.", "il y a une erreur");
             }
         }) {
