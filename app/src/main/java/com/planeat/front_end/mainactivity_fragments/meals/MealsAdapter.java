@@ -30,7 +30,7 @@ class MealsAdapter extends RecyclerView.Adapter {
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.rowlayout, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.meals_recyclerview_row, parent, false);
         return new MyViewHolder(view);
     }
 

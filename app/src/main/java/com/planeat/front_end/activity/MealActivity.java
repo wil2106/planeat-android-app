@@ -46,7 +46,11 @@ public class MealActivity extends AppCompatActivity {
         });
 
         String url = getString(R.string.server_url) + "/recipes/" + recipeId;
+
         final TextView mealNameTV = (TextView) findViewById(R.id.mealNameTextView);
+        final TextView mealPersonTV = (TextView) findViewById(R.id.mealPersonTextView);
+        final TextView mealPrepTimeTV = (TextView) findViewById(R.id.mealPrepTimeTextView);
+        final TextView mealDescriptionTV = (TextView) findViewById(R.id.mealDescriptionTextView);
 
         /* Get access token from shared preferences */
         SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE );
@@ -57,6 +61,9 @@ public class MealActivity extends AppCompatActivity {
             public void onResponse(JSONArray response) {
                 try {
                     mealNameTV.setText(response.getJSONObject(0).getString("recipe_name"));
+                    mealPersonTV.setText(response.getJSONObject(0).getString("recipe_nb_servings"));
+                    mealPrepTimeTV.setText(response.getJSONObject(0).getString("recipe_prep_time"));
+                    mealDescriptionTV.setText(response.getJSONObject(0).getString("recipe_description"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
