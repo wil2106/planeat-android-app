@@ -302,15 +302,15 @@ public class AgendaFragment extends Fragment {
         };
         NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(profileGetRequest);*/
         // example filling, delete when planning requests function in backend
-        JSONObject breakfastInfo = new JSONObject("{\"recipe_name\":\"pancakes\",\"recipe_nb_servings\":\"1\"}");
+        JSONObject breakfastInfo = new JSONObject("{\"recipe_id\":1,\"recipe_name\":\"crepes\",\"recipe_nb_servings\":5}");
         breakfastInfos.add(breakfastInfo);
-        JSONObject breakfastInfo2 = new JSONObject("{\"recipe_name\":\"smoothie\",\"recipe_nb_servings\":\"1\"}");
+        JSONObject breakfastInfo2 = new JSONObject("{\"recipe_id\":9,\"recipe_name\":\"Salade de fruits hivernale\",\"recipe_nb_servings\":4}");
         breakfastInfos.add(breakfastInfo2);
-        JSONObject lunchInfo = new JSONObject("{\"recipe_name\":\"Poulet au boulgour\",\"recipe_nb_servings\":\"4\"}");
+        JSONObject lunchInfo = new JSONObject("{\"recipe_id\":3,\"recipe_name\":\"pates au pesto de roquette\",\"recipe_nb_servings\":4}");
         lunchInfos.add(lunchInfo);
-        JSONObject dinnerInfo = new JSONObject("{\"recipe_name\":\"Crosets aux lardons, cheddar et oignons\",\"recipe_nb_servings\":\"2\"}");
+        JSONObject dinnerInfo = new JSONObject("{\"recipe_id\":10,\"recipe_name\":\"Boeuf emince a la chinoise\",\"recipe_nb_servings\":4}");
         dinnerInfos.add(dinnerInfo);
-        JSONObject dinnerInfo2 = new JSONObject("{\"recipe_name\":\"Verrines parfumées à la violette\",\"recipe_nb_servings\":\"4\"}");
+        JSONObject dinnerInfo2 = new JSONObject("{\"recipe_id\":5,\"recipe_name\":\"tartiflette\",\"recipe_nb_servings\":6}");
         dinnerInfos.add(dinnerInfo2);
         // end of example filling
         RecyclerView breakfastRecyclerView = (RecyclerView) root.findViewById(R.id.breakfastRecyclerView);
