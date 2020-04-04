@@ -1,25 +1,33 @@
 package com.planeat.front_end.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.planeat.front_end.R;
+import com.planeat.front_end.activity.MealActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
 public class AgendaRecyclerViewAdapter extends RecyclerView.Adapter<AgendaRecyclerViewAdapter.ViewHolder> {
 
-    private List<Pair<String, Integer>> mData;
+    private List<JSONObject> mData;
     private LayoutInflater mInflater;
+    Context context;
 
     // data is passed into the constructor
-    public AgendaRecyclerViewAdapter(Context context, List<Pair<String, Integer>> data) {
+    public AgendaRecyclerViewAdapter(Context context, List<JSONObject> data) {
+        this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -34,9 +42,26 @@ public class AgendaRecyclerViewAdapter extends RecyclerView.Adapter<AgendaRecycl
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Pair<String, Integer> agendaInfo = mData.get(position);
-        holder.nameTV.setText(agendaInfo.first);
-        holder.numberTV.setText("" + agendaInfo.second);
+        final JSONObject agendaInfo = mData.get(position);
+        try {
+            holder.nameTV.setText(agendaInfo.getString("recipe_name"));
+            holder.numberTV.setText(agendaInfo.getString("recipe_nb_servings"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final RelativeLayout meal = (RelativeLayout) holder.itemView.findViewById(R.id.agendaMeal);
+        meal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mealIntent = new Intent(context, MealActivity.class);
+                try {
+                    mealIntent.putExtra("recipeId", agendaInfo.getString("recipe_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                context.startActivity(mealIntent);
+            }
+        });
     }
 
     // total number of rows

@@ -35,6 +35,7 @@ import com.planeat.front_end.utils.NetworkSingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -141,7 +143,11 @@ public class AgendaFragment extends Fragment {
                 fillDates(root);
             }
         });
-        fillRecipes(root);
+        try {
+            fillRecipes(root);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return root;
     }
 
@@ -197,7 +203,7 @@ public class AgendaFragment extends Fragment {
         dayNumTV7.setText(sdfNum.format(d));
     }
 
-    private void fillRecipes(View root) {
+    private void fillRecipes(View root) throws JSONException {
         String url = getString(R.string.server_url) + "/users/profile";
         /* Get access token from shared preferences */
         final SharedPreferences sharedPreferences = activity.getSharedPreferences("shared_prefs", MODE_PRIVATE );
@@ -228,9 +234,9 @@ public class AgendaFragment extends Fragment {
             }
         };
         NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(profileGetRequest);
-        final ArrayList<Pair<String, Integer>> breakfastInfos = new ArrayList<>(); // we fill the arraylist that will be used by the recyclerview containing the info
-        final ArrayList<Pair<String, Integer>> lunchInfos = new ArrayList<>();
-        final ArrayList<Pair<String, Integer>> dinnerInfos = new ArrayList<>();
+        final List<JSONObject> breakfastInfos = new ArrayList(); // we fill the list that will be used by the recyclerview containing the info
+        final List<JSONObject> lunchInfos = new ArrayList();
+        final List<JSONObject> dinnerInfos = new ArrayList();
         /*String url2 = getString(R.string.server_url) + "/planning";
         NetworkSingleton.getInstance(activity).clearBreakfastIds();
         NetworkSingleton.getInstance(activity).clearLunchIds();
@@ -247,8 +253,7 @@ public class AgendaFragment extends Fragment {
                         if (DateFormat.format("MM", date).toString().equals(NetworkSingleton.getInstance(activity).getAgendaCurrentMonth()) &&
                                 DateFormat.format("dd", date).equals(NetworkSingleton.getInstance(activity).getAgendaCurrentDay())) {
                             String mealType = response.getJSONObject(i).getJSONArray("planning").getJSONObject(0).getJSONObject("meal_type").getString("name");
-                            Pair<String, Integer> mealInfo = new Pair<>(response.getJSONObject(i).getString("recipe_name"),
-                                                                        response.getJSONObject(i).getInt("recipe_nb_servings")); // example filling
+                            JSONObject mealInfo = response.getJSONObject(i)
                             switch (mealType) {
                                 case "breakfast": {
                                     NetworkSingleton.getInstance(activity).addBreakfastId(response.getJSONObject(i).getInt("recipe_id");
@@ -296,16 +301,18 @@ public class AgendaFragment extends Fragment {
             }
         };
         NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(profileGetRequest);*/
-        Pair<String, Integer> breakfastInfo = new Pair<>("pancakes", 1); // example filling
+        // example filling, delete when planning requests function in backend
+        JSONObject breakfastInfo = new JSONObject("{\"recipe_name\":\"pancakes\",\"recipe_nb_servings\":\"1\"}");
         breakfastInfos.add(breakfastInfo);
-        Pair<String, Integer> breakfastInfo2 = new Pair<>("smoothie", 1);
+        JSONObject breakfastInfo2 = new JSONObject("{\"recipe_name\":\"smoothie\",\"recipe_nb_servings\":\"1\"}");
         breakfastInfos.add(breakfastInfo2);
-        Pair<String, Integer> lunchInfo = new Pair<>("Poulet au boulgour", 4);
+        JSONObject lunchInfo = new JSONObject("{\"recipe_name\":\"Poulet au boulgour\",\"recipe_nb_servings\":\"4\"}");
         lunchInfos.add(lunchInfo);
-        Pair<String, Integer> dinnerInfo = new Pair<>("crosets aux lardons, cheddar et oignons", 2);
+        JSONObject dinnerInfo = new JSONObject("{\"recipe_name\":\"Crosets aux lardons, cheddar et oignons\",\"recipe_nb_servings\":\"2\"}");
         dinnerInfos.add(dinnerInfo);
-        Pair<String, Integer> dinnerInfo2 = new Pair<>("Verrines parfumée à la violette", 4);
+        JSONObject dinnerInfo2 = new JSONObject("{\"recipe_name\":\"Verrines parfumées à la violette\",\"recipe_nb_servings\":\"4\"}");
         dinnerInfos.add(dinnerInfo2);
+        // end of example filling
         RecyclerView breakfastRecyclerView = (RecyclerView) root.findViewById(R.id.breakfastRecyclerView);
         RecyclerView lunchRecyclerView = (RecyclerView) root.findViewById(R.id.lunchRecyclerView);
         RecyclerView dinnerRecyclerView = (RecyclerView) root.findViewById(R.id.dinnerRecyclerView);
