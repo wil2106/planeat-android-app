@@ -203,13 +203,13 @@
                 android:layout_weight="1"
                 android:layout_margin="10dp"/>
 
-            <Button
+            <!--Button
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/planeat_green"
                 android:backgroundTint="@color/white"
-                android:text="Add" />
+                android:text="Add" /-->
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -235,12 +235,12 @@
                 android:layout_weight="1"
                 android:layout_margin="10dp"/>
 
-            <Button
+            <!--Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/planeat_green"
                 android:backgroundTint="@color/white"
-                android:text="Add" />
+                android:text="Add" /-->
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -266,12 +266,12 @@
                 android:layout_weight="1"
                 android:layout_margin="10dp"/>
 
-            <Button
+            <!--Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/planeat_green"
                 android:backgroundTint="@color/white"
-                android:text="Add" />
+                android:text="Add" /-->
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
