@@ -232,6 +232,9 @@ public class AgendaFragment extends Fragment {
         final ArrayList<Pair<String, Integer>> lunchInfos = new ArrayList<>();
         final ArrayList<Pair<String, Integer>> dinnerInfos = new ArrayList<>();
         /*String url2 = getString(R.string.server_url) + "/planning";
+        NetworkSingleton.getInstance(activity).clearBreakfastIds();
+        NetworkSingleton.getInstance(activity).clearLunchIds();
+        NetworkSingleton.getInstance(activity).clearDinnerIds();
         JsonArrayRequest planningGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -324,7 +327,7 @@ public class AgendaFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                 int position = target.getAdapterPosition();
-                //HERE THE DELETE REQUEST
+                //deleteRecipe(0, position);
                 breakfastInfos.remove(position);
                 breakfastAdapter.notifyDataSetChanged();
             }
@@ -339,7 +342,7 @@ public class AgendaFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                 int position = target.getAdapterPosition();
-                //HERE THE DELETE REQUEST
+                //deleteRecipe(1, position);
                 lunchInfos.remove(position);
                 lunchAdapter.notifyDataSetChanged();
             }
@@ -354,11 +357,43 @@ public class AgendaFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                 int position = target.getAdapterPosition();
-                //HERE THE DELETE REQUEST
+                //deleteRecipe(2, position);
                 dinnerInfos.remove(position);
                 dinnerAdapter.notifyDataSetChanged();
             }
         });
         dinnerHelper.attachToRecyclerView(dinnerRecyclerView);
+    }
+
+    private void deleteRecipe(final int meal_type, final int position) {
+        String url = getString(R.string.server_url) + "/planning";
+        JsonArrayRequest deleteRequest = new JsonArrayRequest(Request.Method.DELETE, url, null, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                // do nothing
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("meh", "failed to delete recipe");
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + token);
+                return params;
+            }
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("meal_id", "" + NetworkSingleton.getInstance(activity).getMealId(meal_type, position));
+                return params;
+            }
+        };
+        NetworkSingleton.getInstance(activity).addToRequestQueue(deleteRequest);
     }
 }

@@ -66,15 +66,32 @@ public class NetworkSingleton {
 
     public void addBreakfastId(int id) { breakFastIds.add(id); }
 
-    public int getBreakfastId(int index) { return breakFastIds.get(index); }
+    public int getMealId(int mealType, int index) {
+        switch (mealType) {
+            case 0:
+                return breakFastIds.get(index);
+            case 1:
+                return lunchIds.get(index);
+            case 2:
+                return dinnerIds.get(index);
+            default:
+                return -1;
+        }
+    }
+
+    public void clearBreakfastIds() { breakFastIds = new ArrayList<>(); }
 
     public void addLunchId(int id) { lunchIds.add(id); }
 
     public int getLunchId(int index) { return lunchIds.get(index); }
 
+    public void clearLunchIds() { lunchIds = new ArrayList<>(); }
+
     public void addDinnerId(int id) { dinnerIds.add(id); }
 
     public int getDinnerId(int index) { return dinnerIds.get(index); }
+
+    public void clearDinnerIds() { dinnerIds = new ArrayList<>(); }
 
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
