@@ -73,7 +73,7 @@ public class SettingsFragment extends Fragment {
         /* Get access token from shared preferences */
         final SharedPreferences sharedPreferences = activity.getSharedPreferences("shared_prefs", MODE_PRIVATE );
         token = sharedPreferences.getString("access_token", null);
-        final Button premiumSub = (Button) root.findViewById(R.id.buttonSettingsPremium);
+        final RelativeLayout premiumSub = (RelativeLayout) root.findViewById(R.id.buttonSettingsPremium);
         JsonArrayRequest profileGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
             @Override
