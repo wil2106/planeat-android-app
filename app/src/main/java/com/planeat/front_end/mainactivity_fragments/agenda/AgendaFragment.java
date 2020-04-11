@@ -54,6 +54,7 @@ public class AgendaFragment extends Fragment {
     private AgendaViewModel agendaViewModel;
     Activity activity;
     String token;
+    SharedPreferences sharedPreferences;
 
     @Override
     public void onAttach(Context context) {
@@ -79,6 +80,7 @@ public class AgendaFragment extends Fragment {
         });
         */
         fillDates(root);
+        this.getProfile(root);
         Button btnPrevious = root.findViewById(R.id.buttonAgendaPrevious);
         Button btnNext = root.findViewById(R.id.buttonAgendaNext);
         btnPrevious.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +108,11 @@ public class AgendaFragment extends Fragment {
             public void onClick(View v) {
                 NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(1);
                 fillDates(root);
+                try {
+                    fillRecipes(root);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         layoutDate3.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +120,11 @@ public class AgendaFragment extends Fragment {
             public void onClick(View v) {
                 NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(2);
                 fillDates(root);
+                try {
+                    fillRecipes(root);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         layoutDate4.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +132,11 @@ public class AgendaFragment extends Fragment {
             public void onClick(View v) {
                 NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(3);
                 fillDates(root);
+                try {
+                    fillRecipes(root);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         layoutDate5.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +144,11 @@ public class AgendaFragment extends Fragment {
             public void onClick(View v) {
                 NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(4);
                 fillDates(root);
+                try {
+                    fillRecipes(root);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         layoutDate6.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +156,11 @@ public class AgendaFragment extends Fragment {
             public void onClick(View v) {
                 NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(5);
                 fillDates(root);
+                try {
+                    fillRecipes(root);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         layoutDate7.setOnClickListener(new View.OnClickListener() {
@@ -141,14 +168,48 @@ public class AgendaFragment extends Fragment {
             public void onClick(View v) {
                 NetworkSingleton.getInstance(activity).offsetAgendaDatesRange(6);
                 fillDates(root);
+                try {
+                    fillRecipes(root);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
-        try {
-            fillRecipes(root);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         return root;
+    }
+
+    private void getProfile(View root) {
+        String url = getString(R.string.server_url) + "/users/profile";
+        /* Get access token from shared preferences */
+        sharedPreferences = activity.getSharedPreferences("shared_prefs", MODE_PRIVATE );
+        token = sharedPreferences.getString("access_token", null);
+        final View rootRef = root;
+        JsonArrayRequest agendaProfileGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    NetworkSingleton.getInstance(activity).setUserId(response.getJSONObject(0).getInt("user_id"));
+                    fillRecipes(rootRef);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("meh", "failed to get user_id from server");
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + token);
+                return params;
+            }
+        };
+        NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(agendaProfileGetRequest);
     }
 
     private void fillDates(View root) { //fills the date textviews according to the current date
@@ -204,45 +265,15 @@ public class AgendaFragment extends Fragment {
     }
 
     private void fillRecipes(View root) throws JSONException {
-        String url = getString(R.string.server_url) + "/users/profile";
-        /* Get access token from shared preferences */
-        final SharedPreferences sharedPreferences = activity.getSharedPreferences("shared_prefs", MODE_PRIVATE );
-        token = sharedPreferences.getString("access_token", null);
-        JsonArrayRequest profileGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
-            @Override
-            public void onResponse(JSONArray response) {
-                try {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putInt("user_id", response.getJSONObject(0).getInt("user_id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("meh", "failed to get user_id from server");
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json; charset=UTF-8");
-                params.put("Authorization", "Bearer " + token);
-                return params;
-            }
-        };
-        NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(profileGetRequest);
         final List<JSONObject> breakfastInfos = new ArrayList(); // we fill the list that will be used by the recyclerview containing the info
         final List<JSONObject> lunchInfos = new ArrayList();
         final List<JSONObject> dinnerInfos = new ArrayList();
-        /*String url2 = getString(R.string.server_url) + "/planning";
+        String url = getString(R.string.server_url) + "/planning?user_id=" + NetworkSingleton.getInstance(activity).getUserId();//sharedPreferences.getInt("user_id", -1);
         NetworkSingleton.getInstance(activity).clearBreakfastIds();
         NetworkSingleton.getInstance(activity).clearLunchIds();
         NetworkSingleton.getInstance(activity).clearDinnerIds();
+        final View rootRef = root;
         JsonArrayRequest planningGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
             @Override
             public void onResponse(JSONArray response) {
                 try {
@@ -253,28 +284,78 @@ public class AgendaFragment extends Fragment {
                         if (DateFormat.format("MM", date).toString().equals(NetworkSingleton.getInstance(activity).getAgendaCurrentMonth()) &&
                                 DateFormat.format("dd", date).equals(NetworkSingleton.getInstance(activity).getAgendaCurrentDay())) {
                             String mealType = response.getJSONObject(i).getJSONArray("planning").getJSONObject(0).getJSONObject("meal_type").getString("name");
-                            JSONObject mealInfo = response.getJSONObject(i)
-                            switch (mealType) {
-                                case "breakfast": {
-                                    NetworkSingleton.getInstance(activity).addBreakfastId(response.getJSONObject(i).getInt("recipe_id");
-                                    breakfastInfos.add(mealInfo);
-                                    break;
-                                }
-                                case "lunch": {
-                                    NetworkSingleton.getInstance(activity).addLunchId(response.getJSONObject(i).getInt("recipe_id");
-                                    lunchInfos.add(mealInfo);
-                                    break;
-                                }
-                                case "dinner": {
-                                    NetworkSingleton.getInstance(activity).addDinnerId(response.getJSONObject(i).getInt("recipe_id");
-                                    dinnerInfos.add(mealInfo);
-                                    break;
-                                }
-                                default:
-                                    Log.i("meh", "One meal from the planning had an invalid meal_type");
+                            JSONObject mealInfo = response.getJSONObject(i);
+                            if (mealType.equals("breakfast")) {
+                                NetworkSingleton.getInstance(activity).addBreakfastId(mealInfo.getInt("recipe_id"));
+                                breakfastInfos.add(mealInfo);
+                            }
+                            else if (mealType.equals("lunch")) {
+                                NetworkSingleton.getInstance(activity).addLunchId(mealInfo.getInt("recipe_id"));
+                                lunchInfos.add(mealInfo);
+                            }
+                            else if (mealType.equals("dinner")) {
+                                NetworkSingleton.getInstance(activity).addDinnerId(response.getJSONObject(i).getInt("recipe_id"));
+                                dinnerInfos.add(mealInfo);
                             }
                         }
                     }
+                    RecyclerView breakfastRecyclerView = (RecyclerView) rootRef.findViewById(R.id.breakfastRecyclerView);
+                    RecyclerView lunchRecyclerView = (RecyclerView) rootRef.findViewById(R.id.lunchRecyclerView);
+                    RecyclerView dinnerRecyclerView = (RecyclerView) rootRef.findViewById(R.id.dinnerRecyclerView);
+                    breakfastRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                    final AgendaRecyclerViewAdapter breakfastAdapter = new AgendaRecyclerViewAdapter(activity, breakfastInfos);
+                    breakfastRecyclerView.setAdapter(breakfastAdapter);
+                    lunchRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                    final AgendaRecyclerViewAdapter lunchAdapter = new AgendaRecyclerViewAdapter(activity, lunchInfos);
+                    lunchRecyclerView.setAdapter(lunchAdapter);
+                    dinnerRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                    final AgendaRecyclerViewAdapter dinnerAdapter = new AgendaRecyclerViewAdapter(activity, dinnerInfos);
+                    dinnerRecyclerView.setAdapter(dinnerAdapter);
+                    ItemTouchHelper breakfastHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //this handles planning entry deletion on swiping left
+                        @Override
+                        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                            return false;
+                        }
+
+                        @Override
+                        public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
+                            int position = target.getAdapterPosition();
+                            //deleteRecipe(0, position);
+                            breakfastInfos.remove(position);
+                            breakfastAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    breakfastHelper.attachToRecyclerView(breakfastRecyclerView);
+                    ItemTouchHelper lunchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //this handles planning entry deletion on swiping left
+                        @Override
+                        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                            return false;
+                        }
+
+                        @Override
+                        public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
+                            int position = target.getAdapterPosition();
+                            //deleteRecipe(1, position);
+                            lunchInfos.remove(position);
+                            lunchAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    lunchHelper.attachToRecyclerView(lunchRecyclerView);
+                    ItemTouchHelper dinnerHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //this handles planning entry deletion on swiping left
+                        @Override
+                        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                            return false;
+                        }
+
+                        @Override
+                        public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
+                            int position = target.getAdapterPosition();
+                            //deleteRecipe(2, position);
+                            dinnerInfos.remove(position);
+                            dinnerAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    dinnerHelper.attachToRecyclerView(dinnerRecyclerView);
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
@@ -282,7 +363,7 @@ public class AgendaFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("meh", "failed to get user_id from server");
+                Log.i("meh", "failed to get this day's planning");
             }
         }) {
             @Override
@@ -292,17 +373,10 @@ public class AgendaFragment extends Fragment {
                 params.put("Authorization", "Bearer " + token);
                 return params;
             }
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("user_id", "" + sharedPreferences.getInt("user_id", -1));
-                return params;
-            }
         };
-        NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(profileGetRequest);*/
+        NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(planningGetRequest);
         // example filling, delete when planning requests function in backend
-        JSONObject breakfastInfo = new JSONObject("{\"recipe_id\":1,\"recipe_name\":\"crepes\",\"recipe_nb_servings\":5}");
+        /*JSONObject breakfastInfo = new JSONObject("{\"recipe_id\":1,\"recipe_name\":\"crepes\",\"recipe_nb_servings\":5}");
         breakfastInfos.add(breakfastInfo);
         JSONObject breakfastInfo2 = new JSONObject("{\"recipe_id\":9,\"recipe_name\":\"Salade de fruits hivernale\",\"recipe_nb_servings\":4}");
         breakfastInfos.add(breakfastInfo2);
@@ -311,65 +385,8 @@ public class AgendaFragment extends Fragment {
         JSONObject dinnerInfo = new JSONObject("{\"recipe_id\":10,\"recipe_name\":\"Boeuf emince a la chinoise\",\"recipe_nb_servings\":4}");
         dinnerInfos.add(dinnerInfo);
         JSONObject dinnerInfo2 = new JSONObject("{\"recipe_id\":5,\"recipe_name\":\"tartiflette\",\"recipe_nb_servings\":6}");
-        dinnerInfos.add(dinnerInfo2);
+        dinnerInfos.add(dinnerInfo2);*/
         // end of example filling
-        RecyclerView breakfastRecyclerView = (RecyclerView) root.findViewById(R.id.breakfastRecyclerView);
-        RecyclerView lunchRecyclerView = (RecyclerView) root.findViewById(R.id.lunchRecyclerView);
-        RecyclerView dinnerRecyclerView = (RecyclerView) root.findViewById(R.id.dinnerRecyclerView);
-        breakfastRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        final AgendaRecyclerViewAdapter breakfastAdapter = new AgendaRecyclerViewAdapter(activity, breakfastInfos);
-        breakfastRecyclerView.setAdapter(breakfastAdapter);
-        lunchRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        final AgendaRecyclerViewAdapter lunchAdapter = new AgendaRecyclerViewAdapter(activity, lunchInfos);
-        lunchRecyclerView.setAdapter(lunchAdapter);
-        dinnerRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        final AgendaRecyclerViewAdapter dinnerAdapter = new AgendaRecyclerViewAdapter(activity, dinnerInfos);
-        dinnerRecyclerView.setAdapter(dinnerAdapter);
-        ItemTouchHelper breakfastHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //this handles planning entry deletion on swiping left
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
-                int position = target.getAdapterPosition();
-                //deleteRecipe(0, position);
-                breakfastInfos.remove(position);
-                breakfastAdapter.notifyDataSetChanged();
-            }
-        });
-        breakfastHelper.attachToRecyclerView(breakfastRecyclerView);
-        ItemTouchHelper lunchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //this handles planning entry deletion on swiping left
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
-                int position = target.getAdapterPosition();
-                //deleteRecipe(1, position);
-                lunchInfos.remove(position);
-                lunchAdapter.notifyDataSetChanged();
-            }
-        });
-        lunchHelper.attachToRecyclerView(lunchRecyclerView);
-        ItemTouchHelper dinnerHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) { //this handles planning entry deletion on swiping left
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
-                int position = target.getAdapterPosition();
-                //deleteRecipe(2, position);
-                dinnerInfos.remove(position);
-                dinnerAdapter.notifyDataSetChanged();
-            }
-        });
-        dinnerHelper.attachToRecyclerView(dinnerRecyclerView);
     }
 
     private void deleteRecipe(final int meal_type, final int position) {

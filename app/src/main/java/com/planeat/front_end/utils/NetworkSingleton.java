@@ -18,6 +18,7 @@ public class NetworkSingleton {
     private static ArrayList<Integer> breakFastIds = new ArrayList<>();
     private static ArrayList<Integer> lunchIds = new ArrayList<>();
     private static ArrayList<Integer> dinnerIds = new ArrayList<>();
+    private static int user_id = -1;
 
     private NetworkSingleton(Context context) {
         ctx = context;
@@ -83,15 +84,15 @@ public class NetworkSingleton {
 
     public void addLunchId(int id) { lunchIds.add(id); }
 
-    public int getLunchId(int index) { return lunchIds.get(index); }
-
     public void clearLunchIds() { lunchIds = new ArrayList<>(); }
 
     public void addDinnerId(int id) { dinnerIds.add(id); }
 
-    public int getDinnerId(int index) { return dinnerIds.get(index); }
-
     public void clearDinnerIds() { dinnerIds = new ArrayList<>(); }
+
+    public void setUserId(int id) { this.user_id = id; }
+
+    public int getUserId() { return this.user_id; }
 
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
