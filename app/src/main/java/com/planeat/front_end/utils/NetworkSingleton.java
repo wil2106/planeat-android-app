@@ -15,6 +15,7 @@ public class NetworkSingleton {
     private static int agendaDatesRange = 0;
     private static String agendaCurrentDay = "00";
     private static String agendaCurrentMonth = "00";
+    private static String agendaCurrentYear = "0000";
     private static ArrayList<Integer> breakFastIds = new ArrayList<>();
     private static ArrayList<Integer> lunchIds = new ArrayList<>();
     private static ArrayList<Integer> dinnerIds = new ArrayList<>();
@@ -63,6 +64,14 @@ public class NetworkSingleton {
 
     public String getAgendaCurrentMonth() {
         return agendaCurrentMonth;
+    }
+
+    public void setAgendaCurrentYear(String year) {
+        agendaCurrentYear = year;
+    }
+
+    public String getAgendaCurrentYear() {
+        return agendaCurrentYear;
     }
 
     public void addBreakfastId(int id) { breakFastIds.add(id); }

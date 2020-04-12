@@ -238,6 +238,7 @@ public class AgendaFragment extends Fragment {
         completeDateTV.setText(DateFormat.format("EEEE", d) + " " + sdfNum.format(d) + "th " + DateFormat.format("MMMM", d));
         NetworkSingleton.getInstance(activity).setAgendaCurrentDay(sdfNum.format(d));
         NetworkSingleton.getInstance(activity).setAgendaCurrentMonth(DateFormat.format("MM", d).toString());
+        NetworkSingleton.getInstance(activity).setAgendaCurrentYear(DateFormat.format("yyyy", d).toString());
         calendar.add(Calendar.DAY_OF_YEAR, 1);
         d = calendar.getTime();
         dayTV2.setText(sdf.format(d));
@@ -268,7 +269,10 @@ public class AgendaFragment extends Fragment {
         final List<JSONObject> breakfastInfos = new ArrayList(); // we fill the list that will be used by the recyclerview containing the info
         final List<JSONObject> lunchInfos = new ArrayList();
         final List<JSONObject> dinnerInfos = new ArrayList();
-        String url = getString(R.string.server_url) + "/planning?user_id=" + NetworkSingleton.getInstance(activity).getUserId();//sharedPreferences.getInt("user_id", -1);
+        String url = getString(R.string.server_url) + "/planning?user_id=" + NetworkSingleton.getInstance(activity).getUserId() + "&date=" +
+                NetworkSingleton.getInstance(activity).getAgendaCurrentYear() + "-" +
+                NetworkSingleton.getInstance(activity).getAgendaCurrentMonth() + "-" +
+                NetworkSingleton.getInstance(activity).getAgendaCurrentDay();
         NetworkSingleton.getInstance(activity).clearBreakfastIds();
         NetworkSingleton.getInstance(activity).clearLunchIds();
         NetworkSingleton.getInstance(activity).clearDinnerIds();
@@ -277,12 +281,7 @@ public class AgendaFragment extends Fragment {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date;
                     for (int i = 0; i < response.length(); ++i) {
-                        date = format.parse(response.getJSONObject(i).getJSONArray("planning").getJSONObject(0).getString("date"));
-                        if (DateFormat.format("MM", date).toString().equals(NetworkSingleton.getInstance(activity).getAgendaCurrentMonth()) &&
-                                DateFormat.format("dd", date).equals(NetworkSingleton.getInstance(activity).getAgendaCurrentDay())) {
                             String mealType = response.getJSONObject(i).getJSONArray("planning").getJSONObject(0).getJSONObject("meal_type").getString("name");
                             JSONObject mealInfo = response.getJSONObject(i);
                             if (mealType.equals("breakfast")) {
@@ -297,7 +296,7 @@ public class AgendaFragment extends Fragment {
                                 NetworkSingleton.getInstance(activity).addDinnerId(response.getJSONObject(i).getInt("recipe_id"));
                                 dinnerInfos.add(mealInfo);
                             }
-                        }
+                        //}
                     }
                     RecyclerView breakfastRecyclerView = (RecyclerView) rootRef.findViewById(R.id.breakfastRecyclerView);
                     RecyclerView lunchRecyclerView = (RecyclerView) rootRef.findViewById(R.id.lunchRecyclerView);
@@ -356,7 +355,7 @@ public class AgendaFragment extends Fragment {
                         }
                     });
                     dinnerHelper.attachToRecyclerView(dinnerRecyclerView);
-                } catch (JSONException | ParseException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -375,18 +374,6 @@ public class AgendaFragment extends Fragment {
             }
         };
         NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(planningGetRequest);
-        // example filling, delete when planning requests function in backend
-        /*JSONObject breakfastInfo = new JSONObject("{\"recipe_id\":1,\"recipe_name\":\"crepes\",\"recipe_nb_servings\":5}");
-        breakfastInfos.add(breakfastInfo);
-        JSONObject breakfastInfo2 = new JSONObject("{\"recipe_id\":9,\"recipe_name\":\"Salade de fruits hivernale\",\"recipe_nb_servings\":4}");
-        breakfastInfos.add(breakfastInfo2);
-        JSONObject lunchInfo = new JSONObject("{\"recipe_id\":3,\"recipe_name\":\"pates au pesto de roquette\",\"recipe_nb_servings\":4}");
-        lunchInfos.add(lunchInfo);
-        JSONObject dinnerInfo = new JSONObject("{\"recipe_id\":10,\"recipe_name\":\"Boeuf emince a la chinoise\",\"recipe_nb_servings\":4}");
-        dinnerInfos.add(dinnerInfo);
-        JSONObject dinnerInfo2 = new JSONObject("{\"recipe_id\":5,\"recipe_name\":\"tartiflette\",\"recipe_nb_servings\":6}");
-        dinnerInfos.add(dinnerInfo2);*/
-        // end of example filling
     }
 
     private void deleteRecipe(final int meal_type, final int position) {
