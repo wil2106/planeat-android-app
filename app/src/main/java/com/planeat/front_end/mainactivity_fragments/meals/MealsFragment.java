@@ -106,7 +106,6 @@ public class MealsFragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 Log.i("meh.", "il y a une erreur");
             }
         }) {

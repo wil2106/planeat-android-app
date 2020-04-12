@@ -18,11 +18,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.planeat.front_end.R;
-import com.planeat.front_end.utils.MealRecyclerViewAdapter;
+import com.planeat.front_end.utils.MealIngredientRecyclerViewAdapter;
+import com.planeat.front_end.utils.MealRecipeRecyclerViewAdapter;
 import com.planeat.front_end.utils.NetworkSingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,7 +49,7 @@ public class MealActivity extends AppCompatActivity {
             }
         });
 
-        String url = getString(R.string.server_url) + "/recipes/" + recipeId+"/details";
+        String url = getString(R.string.server_url) + "/recipes/" + recipeId + "/details";
 
         final TextView mealNameTV = (TextView) findViewById(R.id.mealNameTextView);
         final TextView mealPersonTV = (TextView) findViewById(R.id.mealPersonTextView);
@@ -57,9 +59,10 @@ public class MealActivity extends AppCompatActivity {
         final RecyclerView ingredientRV = (RecyclerView) findViewById(R.id.ingredientList);
         final RecyclerView recipeRV = (RecyclerView) findViewById(R.id.recipeList);
         // set a LinearLayoutManager with default vertical orientation
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getApplicationContext());
-        ingredientRV.setLayoutManager(linearLayoutManager);
-        recipeRV.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager ingredientLinearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager recipeLinearLayoutManager = new LinearLayoutManager(this);
+        ingredientRV.setLayoutManager(ingredientLinearLayoutManager);
+        recipeRV.setLayoutManager(recipeLinearLayoutManager);
 
         /* Get access token from shared preferences */
         SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE );
@@ -69,14 +72,17 @@ public class MealActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    mealNameTV.setText(response.getJSONObject(0).getString("recipe_name"));
-                    mealPersonTV.setText(response.getJSONObject(0).getString("recipe_nb_servings"));
-                    mealPrepTimeTV.setText(response.getJSONObject(0).getString("recipe_prep_time"));
-                    mealDescriptionTV.setText(response.getJSONObject(0).getString("recipe_description"));
+                    JSONObject resp = response.getJSONObject(0);
+                    mealNameTV.setText(resp.getString("recipe_name"));
+                    mealPersonTV.setText(resp.getString("recipe_nb_servings"));
+                    mealPrepTimeTV.setText(resp.getString("recipe_prep_time"));
+                    mealDescriptionTV.setText(resp.getString("recipe_description"));
 
-                    MealRecyclerViewAdapter mealAdapter = new MealRecyclerViewAdapter(context);
-                    ingredientRV.setAdapter(mealAdapter); // set the Adapter to RecyclerView
-                    recipeRV.setAdapter(mealAdapter); // set the Adapter to RecyclerView
+                    MealIngredientRecyclerViewAdapter mealIngredientAdapter = new MealIngredientRecyclerViewAdapter(context, resp.getJSONArray("ingredients"));
+                    MealRecipeRecyclerViewAdapter mealRecipeAdapter = new MealRecipeRecyclerViewAdapter(context, resp.getJSONArray("steps"));
+
+                    ingredientRV.setAdapter(mealIngredientAdapter); // set the Adapter to RecyclerView
+                    recipeRV.setAdapter(mealRecipeAdapter); // set the Adapter to RecyclerView
 
                 } catch (JSONException e) {
                     e.printStackTrace();

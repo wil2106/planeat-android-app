@@ -48,7 +48,7 @@ class MealsAdapter extends RecyclerView.Adapter {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        myViewHolder.mealName.setText(entryName);
+        myViewHolder.mealName.setText(entryName.substring(0, 1).toUpperCase() + entryName.substring(1));
         myViewHolder.mealPrepTime.setText(entryTime + "' - ");
         // In case the meal is for one person
         if(!(entryPerson == "1"))
@@ -86,9 +86,6 @@ class MealsAdapter extends RecyclerView.Adapter {
             mealName = (TextView) itemView.findViewById(R.id.MealNameTextView);
             mealPrepTime = (TextView) itemView.findViewById(R.id.MealPrepTimeTextView);
             mealPerson = (TextView) itemView.findViewById(R.id.MealPersonTextView);
-
-
-
         }
     }
 }
