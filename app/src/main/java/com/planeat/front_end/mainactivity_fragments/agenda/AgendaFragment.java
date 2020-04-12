@@ -273,9 +273,6 @@ public class AgendaFragment extends Fragment {
                 NetworkSingleton.getInstance(activity).getAgendaCurrentYear() + "-" +
                 NetworkSingleton.getInstance(activity).getAgendaCurrentMonth() + "-" +
                 NetworkSingleton.getInstance(activity).getAgendaCurrentDay();
-        NetworkSingleton.getInstance(activity).clearBreakfastIds();
-        NetworkSingleton.getInstance(activity).clearLunchIds();
-        NetworkSingleton.getInstance(activity).clearDinnerIds();
         final View rootRef = root;
         JsonArrayRequest planningGetRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -285,18 +282,14 @@ public class AgendaFragment extends Fragment {
                             String mealType = response.getJSONObject(i).getJSONArray("planning").getJSONObject(0).getJSONObject("meal_type").getString("name");
                             JSONObject mealInfo = response.getJSONObject(i);
                             if (mealType.equals("breakfast")) {
-                                NetworkSingleton.getInstance(activity).addBreakfastId(mealInfo.getInt("recipe_id"));
                                 breakfastInfos.add(mealInfo);
                             }
                             else if (mealType.equals("lunch")) {
-                                NetworkSingleton.getInstance(activity).addLunchId(mealInfo.getInt("recipe_id"));
                                 lunchInfos.add(mealInfo);
                             }
                             else if (mealType.equals("dinner")) {
-                                NetworkSingleton.getInstance(activity).addDinnerId(response.getJSONObject(i).getInt("recipe_id"));
                                 dinnerInfos.add(mealInfo);
                             }
-                        //}
                     }
                     RecyclerView breakfastRecyclerView = (RecyclerView) rootRef.findViewById(R.id.breakfastRecyclerView);
                     RecyclerView lunchRecyclerView = (RecyclerView) rootRef.findViewById(R.id.lunchRecyclerView);
@@ -319,7 +312,11 @@ public class AgendaFragment extends Fragment {
                         @Override
                         public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                             int position = target.getAdapterPosition();
-                            //deleteRecipe(0, position);
+                            try {
+                                deleteRecipe(0, breakfastInfos, position);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             breakfastInfos.remove(position);
                             breakfastAdapter.notifyDataSetChanged();
                         }
@@ -334,7 +331,11 @@ public class AgendaFragment extends Fragment {
                         @Override
                         public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                             int position = target.getAdapterPosition();
-                            //deleteRecipe(1, position);
+                            try {
+                                deleteRecipe(1, lunchInfos, position);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             lunchInfos.remove(position);
                             lunchAdapter.notifyDataSetChanged();
                         }
@@ -349,7 +350,11 @@ public class AgendaFragment extends Fragment {
                         @Override
                         public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                             int position = target.getAdapterPosition();
-                            //deleteRecipe(2, position);
+                            try {
+                                deleteRecipe(2, dinnerInfos, position);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             dinnerInfos.remove(position);
                             dinnerAdapter.notifyDataSetChanged();
                         }
@@ -376,8 +381,8 @@ public class AgendaFragment extends Fragment {
         NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(planningGetRequest);
     }
 
-    private void deleteRecipe(final int meal_type, final int position) {
-        String url = getString(R.string.server_url) + "/planning";
+    private void deleteRecipe(final int meal_type, List<JSONObject> mealInfos, final int position) throws JSONException {
+        String url = getString(R.string.server_url) + "/planning?meal_id=" + mealInfos.get(position).getJSONArray("planning").getJSONObject(0).getString("meal_id");
         JsonArrayRequest deleteRequest = new JsonArrayRequest(Request.Method.DELETE, url, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -395,13 +400,6 @@ public class AgendaFragment extends Fragment {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Content-Type", "application/json; charset=UTF-8");
                 params.put("Authorization", "Bearer " + token);
-                return params;
-            }
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("meal_id", "" + NetworkSingleton.getInstance(activity).getMealId(meal_type, position));
                 return params;
             }
         };

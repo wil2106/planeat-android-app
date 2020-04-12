@@ -16,9 +16,6 @@ public class NetworkSingleton {
     private static String agendaCurrentDay = "00";
     private static String agendaCurrentMonth = "00";
     private static String agendaCurrentYear = "0000";
-    private static ArrayList<Integer> breakFastIds = new ArrayList<>();
-    private static ArrayList<Integer> lunchIds = new ArrayList<>();
-    private static ArrayList<Integer> dinnerIds = new ArrayList<>();
     private static int user_id = -1;
 
     private NetworkSingleton(Context context) {
@@ -73,31 +70,6 @@ public class NetworkSingleton {
     public String getAgendaCurrentYear() {
         return agendaCurrentYear;
     }
-
-    public void addBreakfastId(int id) { breakFastIds.add(id); }
-
-    public int getMealId(int mealType, int index) {
-        switch (mealType) {
-            case 0:
-                return breakFastIds.get(index);
-            case 1:
-                return lunchIds.get(index);
-            case 2:
-                return dinnerIds.get(index);
-            default:
-                return -1;
-        }
-    }
-
-    public void clearBreakfastIds() { breakFastIds = new ArrayList<>(); }
-
-    public void addLunchId(int id) { lunchIds.add(id); }
-
-    public void clearLunchIds() { lunchIds = new ArrayList<>(); }
-
-    public void addDinnerId(int id) { dinnerIds.add(id); }
-
-    public void clearDinnerIds() { dinnerIds = new ArrayList<>(); }
 
     public void setUserId(int id) { this.user_id = id; }
 
