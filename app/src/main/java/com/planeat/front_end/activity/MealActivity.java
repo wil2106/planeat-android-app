@@ -46,8 +46,7 @@ public class MealActivity extends AppCompatActivity {
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent(MealActivity.this, MainActivity.class);
-                startActivity(returnIntent);
+                onBackPressed();
             }
         });
 
