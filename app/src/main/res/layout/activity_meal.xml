@@ -253,7 +253,11 @@
                         android:layout_centerHorizontal="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add to planning" />
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/planeat_orange"
+                        android:text="Add to planning"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"/>
 
                 </RelativeLayout>
 
