@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -103,5 +105,13 @@ public class MealActivity extends AppCompatActivity {
             }
         };
         NetworkSingleton.getInstance(getApplicationContext()).addToRequestQueue(testRequest);
+        ImageView addRedirection = findViewById(R.id.addMealToPlanningRedirection);
+        addRedirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ScrollView scrollView = findViewById(R.id.mealDetailsScrollView);
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
     }
 }

@@ -1,52 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/planeat_green">
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/mealDetailsScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/headerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
-
-            <ImageView
-                android:id="@+id/buttonMealReturn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/baseline_arrow_back_black_18dp" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Meal details"
-                    android:textColor="@color/black"
-                    android:textSize="20dp" />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_below="@id/headerLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/very_light_grey">
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/headerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp">
+
+                <ImageView
+                    android:id="@+id/buttonMealReturn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/baseline_arrow_back_black_18dp" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Meal details"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/addMealToPlanningRedirection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/plus_box_outline" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_below="@id/headerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/very_light_grey">
 
                 <RelativeLayout
                     android:id="@+id/MealDetailLayout"
@@ -55,8 +71,7 @@
                     android:orientation="vertical"
                     android:layout_marginBottom="5dp"
                     android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    >
+                    android:paddingBottom="20dp">
 
                     <TextView
                         android:id="@+id/mealNameTextView"
@@ -74,6 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp">
+
                         <TextView
                             android:id="@+id/mealPersonTextView"
                             android:layout_width="wrap_content"
@@ -91,6 +107,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/baseline_person_outline_black_18dp"/>
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -98,6 +115,7 @@
                         android:layout_toRightOf="@id/mealPersonLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+
                         <TextView
                             android:id="@+id/mealPrepTimeTextView"
                             android:layout_width="wrap_content"
@@ -115,6 +133,7 @@
                             android:layout_width="20dp"
                             android:layout_height="25dp"
                             android:src="@drawable/baseline_access_alarm_black_18dp"/>
+
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -126,8 +145,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
                     android:layout_below="@id/MealDetailLayout"
-                    android:background="@color/planeat_grey"
-                    ></RelativeLayout>
+                    android:background="@color/planeat_grey"/>
 
                 <RelativeLayout
                     android:id="@+id/mealDescriptionLayout"
@@ -136,8 +154,8 @@
                     android:layout_below="@id/MealDetailLayout"
                     android:background="@color/very_light_grey"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    >
+                    android:layout_marginTop="5dp">
+
                     <TextView
                         android:id="@+id/mealDescriptionTextView"
                         android:layout_width="wrap_content"
@@ -156,8 +174,8 @@
                     android:background="@color/very_light_grey"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/mealIngredientTextView"
                         android:layout_width="wrap_content"
@@ -182,8 +200,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="10dp"
                         android:layout_below="@id/ingredientList"
-                        android:background="@color/planeat_grey"
-                        ></RelativeLayout>
+                        android:background="@color/planeat_grey"/>
 
                     <TextView
                         android:id="@+id/mealRecipeTextView"
@@ -200,7 +217,50 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/recipeList"
                         android:nestedScrollingEnabled="false"/>
+
                 </LinearLayout>
+                <RelativeLayout
+                    android:layout_below="@id/mealIngredientLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true">
+
+                    <RelativeLayout
+                        android:id="@+id/mealTimePickers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true">
+
+                        <DatePicker android:id="@+id/mealDetailsDatePicker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:datePickerMode="spinner"
+                            android:calendarViewShown="false" />
+
+                        <Spinner
+                            android:id="@+id/spinnerMealType"
+                            android:layout_toRightOf="@id/mealDetailsDatePicker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:entries="@array/meal_type"
+                            android:prompt="@string/meal_type_prompt"/>
+
+                    </RelativeLayout>
+                    <Button
+                        android:id="@+id/addMealToPlanningButton"
+                        android:layout_below="@id/mealTimePickers"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add to planning" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
         </RelativeLayout>
-    </RelativeLayout>
+
+    </ScrollView>
+
 </RelativeLayout>
