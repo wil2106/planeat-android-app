@@ -16,6 +16,7 @@ import com.planeat.front_end.activity.MealActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class MealsAdapter extends RecyclerView.Adapter {
@@ -87,5 +88,12 @@ class MealsAdapter extends RecyclerView.Adapter {
             mealPrepTime = (TextView) itemView.findViewById(R.id.MealPrepTimeTextView);
             mealPerson = (TextView) itemView.findViewById(R.id.MealPersonTextView);
         }
+    }
+
+    public void updateListMeal(List<JSONObject> mealsList){
+
+        recipes = new ArrayList<>();
+        recipes.addAll(mealsList);
+        notifyDataSetChanged();
     }
 }
