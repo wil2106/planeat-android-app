@@ -73,66 +73,87 @@
                     android:paddingTop="20dp"
                     android:paddingBottom="20dp">
 
-                    <TextView
-                        android:id="@+id/mealNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="5dp"
-                        android:text="Meal details"
-                        android:textColor="@color/black"
-                        android:textSize="20dp" />
-
                     <RelativeLayout
-                        android:id="@+id/mealPersonLayout"
-                        android:layout_toRightOf="@id/mealNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp">
+                        android:id="@+id/MealTitleLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
-                            android:id="@+id/mealPersonTextView"
+                            android:id="@+id/mealNameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingTop="5dp"
-                            android:text="Nb persons"
-                            android:textColor="@color/planeat_grey"
-                            android:textSize="15dp" />
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="5dp"
+                            android:text="Meal details"
+                            android:textColor="@color/black"
+                            android:textSize="20dp" />
 
-                        <ImageView
-                            android:id="@+id/imageViewPerson"
-                            android:layout_toRightOf="@id/mealPersonTextView"
-                            android:paddingTop="6dp"
-                            android:paddingLeft="4dp"
+                        <RelativeLayout
+                            android:id="@+id/mealPersonLayout"
+                            android:layout_toRightOf="@id/mealNameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/baseline_person_outline_black_18dp"/>
+                            android:layout_marginRight="5dp">
+
+                            <TextView
+                                android:id="@+id/mealPersonTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Nb persons"
+                                android:textColor="@color/planeat_grey"
+                                android:textSize="15dp" />
+
+                            <ImageView
+                                android:id="@+id/imageViewPerson"
+                                android:layout_toRightOf="@id/mealPersonTextView"
+                                android:paddingTop="6dp"
+                                android:paddingLeft="4dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/baseline_person_outline_black_18dp"/>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/mealPrepTimeLayout"
+                            android:layout_toRightOf="@id/mealPersonLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/mealPrepTimeTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="Prep time"
+                                android:textColor="@color/planeat_grey"
+                                android:textSize="15dp" />
+
+                            <ImageView
+                                android:id="@+id/imageViewPrepTime"
+                                android:layout_toRightOf="@id/mealPrepTimeTextView"
+                                android:paddingTop="6dp"
+                                android:paddingLeft="4dp"
+                                android:layout_width="20dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/baseline_access_alarm_black_18dp"/>
+
+                        </RelativeLayout>
 
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:id="@+id/mealPrepTimeLayout"
-                        android:layout_toRightOf="@id/mealPersonLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/MealTitleLayout">
 
-                        <TextView
-                            android:id="@+id/mealPrepTimeTextView"
+                        <RatingBar
+                            android:id="@+id/ratingBarMealDetails"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingTop="5dp"
-                            android:text="Prep time"
-                            android:textColor="@color/planeat_grey"
-                            android:textSize="15dp" />
-
-                        <ImageView
-                            android:id="@+id/imageViewPrepTime"
-                            android:layout_toRightOf="@id/mealPrepTimeTextView"
-                            android:paddingTop="6dp"
-                            android:paddingLeft="4dp"
-                            android:layout_width="20dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/baseline_access_alarm_black_18dp"/>
+                            android:numStars="5"
+                            android:stepSize="0.5" />
 
                     </RelativeLayout>
 

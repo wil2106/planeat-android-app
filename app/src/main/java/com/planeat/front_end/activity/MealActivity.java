@@ -10,10 +10,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -141,7 +143,7 @@ public class MealActivity extends AppCompatActivity {
                     jsonObject.put("recipe_id", recipeId);
                     jsonObject.put("mealtype_id", (spinner.getSelectedItemPosition() + 1));
                 } catch (JSONException e) {
-                    // handle exception (not supposed to happen)
+                    Log.i("meh", "JSON error before post planning request");
                 }
                 String url = getString(R.string.server_url)+"/planning";
                 StringRequest postMealRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -174,13 +176,64 @@ public class MealActivity extends AppCompatActivity {
                         try {
                             return jsonObject.toString().getBytes("utf-8");
                         } catch (UnsupportedEncodingException uee) {
-                            // not supposed to happen
+                            Log.i("meh", "encountered a problem with JSON parsing");
                             return null;
                         }
                     }
                 };
                 NetworkSingleton.getInstance(getApplicationContext()).addToRequestQueue(postMealRequest);
                 Toast.makeText(getApplicationContext(),"Successfully added to planning", Toast.LENGTH_LONG).show();
+            }
+        });
+        RatingBar ratingBar = findViewById(R.id.ratingBarMealDetails);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, final float rating, boolean fromUser) {
+                final JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("user_id", NetworkSingleton.getInstance(getApplicationContext()).getUserId());
+                    jsonObject.put("rate", (int) (rating * 2));
+                } catch (JSONException e) {
+                    Log.i("meh", "JSON error before post rating request");
+                }
+                String url = getString(R.string.server_url)+"/recipes/" + recipeId + "/rate";
+                StringRequest postMealRatingRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("meh", "recipe " + recipeId + " rated " + ((int)(rating * 2)));
+                    }
+                },
+                        new Response.ErrorListener()
+                        {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("meh", "failed to add meal to planning");
+                            }
+                        }
+                ) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json; charset=UTF-8");
+                        params.put("Authorization", "Bearer " + token);
+                        return params;
+                    }
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=UTF-8";
+                    }
+                    @Override
+                    public byte[] getBody() {
+                        try {
+                            return jsonObject.toString().getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            Log.i("meh", "encountered a problem with JSON parsing");
+                            return null;
+                        }
+                    }
+                };
+                NetworkSingleton.getInstance(getApplicationContext()).addToRequestQueue(postMealRatingRequest);
             }
         });
     }
