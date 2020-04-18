@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -128,6 +129,10 @@ public class MealsFragment extends Fragment implements SearchView.OnQueryTextLis
                     MealsAdapter mealsAdapter = new MealsAdapter(getContext(), recipeListSearch);
                     recyclerView.setAdapter(mealsAdapter); // set the Adapter to RecyclerView
 
+                    /* Hide bar */
+                    final ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+                    progressBar.setVisibility(View.INVISIBLE);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -184,11 +189,15 @@ public class MealsFragment extends Fragment implements SearchView.OnQueryTextLis
 
                         //Collections.shuffle(recipeList);
 
-                        List<JSONObject> subRecipeList = recipeList.subList(0,10);
+                        //List<JSONObject> subRecipeList = recipeList.subList(0,10);
 
                         //  call the constructor of MealsAdapter to send the reference and data to Adapter
-                        MealsAdapter mealsAdapter = new MealsAdapter(getContext(), subRecipeList);
+                        MealsAdapter mealsAdapter = new MealsAdapter(getContext(), recipeList);
                         recyclerView.setAdapter(mealsAdapter); // set the Adapter to RecyclerView
+
+                        /* Hide bar */
+                        final ProgressBar progressBar = activity.findViewById(R.id.progressBar);
+                        progressBar.setVisibility(View.INVISIBLE);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
