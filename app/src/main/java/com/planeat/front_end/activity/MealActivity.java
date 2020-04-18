@@ -78,6 +78,7 @@ public class MealActivity extends AppCompatActivity {
         /* Get access token from shared preferences */
         SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE );
         token = sharedPreferences.getString("access_token", null);
+        final RatingBar ratingBar = findViewById(R.id.ratingBarMealDetails);
         JsonArrayRequest testRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
             @Override
@@ -95,6 +96,34 @@ public class MealActivity extends AppCompatActivity {
                     ingredientRV.setAdapter(mealIngredientAdapter); // set the Adapter to RecyclerView
                     recipeRV.setAdapter(mealRecipeAdapter); // set the Adapter to RecyclerView
 
+                    String url1 = getString(R.string.server_url) + "/recipes/" + recipeId + "/rate?user_id=" + NetworkSingleton.getInstance(getApplicationContext()).getUserId();
+                    JsonArrayRequest MealRatingGetRequest = new JsonArrayRequest(Request.Method.GET, url1, null, new Response.Listener<JSONArray>() {
+
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            try {
+                                if (response.length() > 0) {
+                                    ratingBar.setRating(((float) response.getJSONObject(0).getInt("rate")) / 2);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("meh", "failed to request recipe rating");
+                        }
+                    }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Content-Type", "application/json; charset=UTF-8");
+                            params.put("Authorization", "Bearer " + token);
+                            return params;
+                        }
+                    };
+                    NetworkSingleton.getInstance(getApplicationContext()).addToRequestQueue(MealRatingGetRequest);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -185,7 +214,6 @@ public class MealActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Successfully added to planning", Toast.LENGTH_LONG).show();
             }
         });
-        RatingBar ratingBar = findViewById(R.id.ratingBarMealDetails);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
             @Override
@@ -208,7 +236,7 @@ public class MealActivity extends AppCompatActivity {
                         {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.i("meh", "failed to add meal to planning");
+                                Log.i("meh", "failed to add meal rating");
                             }
                         }
                 ) {
