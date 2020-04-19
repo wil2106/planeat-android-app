@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/planeat_green">
 
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/agendaParentLayout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
@@ -186,6 +188,7 @@
                 android:layout_marginBottom="10dp"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/breakfastLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -218,6 +221,7 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:id="@+id/lunchLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -249,6 +253,7 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:id="@+id/dinnerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

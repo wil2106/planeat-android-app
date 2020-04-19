@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_gravity="center_vertical"
+    android:background="@color/very_light_grey">
+
+    <TextView
+        android:id="@+id/agendaConfirmDeleteTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove this meal from your planning?"
+        android:textSize="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:layout_below="@id/agendaConfirmDeleteTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_marginBottom="20dp">
+        <Button
+            android:id="@+id/agendaConfirmDeleteAcceptBtn"
+            android:textAllCaps="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/agendaConfirmDeleteCancelBtn"
+            android:text="Accept"
+            android:textSize="17dp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/white"
+            android:background="@color/planeat_orange"/>
+        <Button
+            android:id="@+id/agendaConfirmDeleteCancelBtn"
+            android:textAllCaps="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:text="Cancel"
+            android:textSize="17dp"
+            android:textColor="@color/white"
+            android:background="@color/planeat_grey"/>
+    </LinearLayout>
+
+</RelativeLayout>
