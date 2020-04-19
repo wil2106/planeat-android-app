@@ -2,22 +2,37 @@ package com.planeat.front_end.mainactivity_fragments.meals;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.planeat.front_end.R;
 import com.planeat.front_end.activity.MealActivity;
+import com.planeat.front_end.utils.NetworkSingleton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
 
 class MealsAdapter extends RecyclerView.Adapter {
 
@@ -27,7 +42,6 @@ class MealsAdapter extends RecyclerView.Adapter {
     public MealsAdapter(Context context, List recipes) {
         this.context = context;
         this.recipes = recipes;
-
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,7 +51,7 @@ class MealsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        MyViewHolder myViewHolder = (MyViewHolder) holder;
+        final MyViewHolder myViewHolder = (MyViewHolder) holder;
         String entryName = null;
         String entryTime = null;
         String entryPerson = null;
