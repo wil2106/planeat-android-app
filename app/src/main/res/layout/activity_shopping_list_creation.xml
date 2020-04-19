@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ShoppingListCreationActivity"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:layout_weight="2">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"/>
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:layout_marginBottom="10dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start date:"/>
+        <DatePicker android:id="@+id/startDateDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="End date:"/>
+        <DatePicker android:id="@+id/endDateDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generate list with: "/>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RadioButton android:id="@+id/lowestPricesRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lowest prices (different markets)"
+                android:checked="true"/>
+            <RadioButton android:id="@+id/oneMarketRadio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="One market :">
+            </RadioButton>
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/marketTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Market:"/>
+            <EditText
+                android:visibility="invisible"
+                android:id="@+id/marketEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:layout_marginBottom="10dp" />
+        </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:orientation="horizontal"
+        android:layout_gravity="right" >
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/planeat_grey"
+                android:textColor="@color/white"
+                android:text="Cancel"
+                android:onClick="cancelCreation"
+                android:id="@+id/cancelButton"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/planeat_green"
+                android:textColor="@color/white"
+                android:text="Create"
+                android:layout_alignParentRight="true"
+                android:onClick="createShoppingList"
+                android:id="@+id/createButton"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
