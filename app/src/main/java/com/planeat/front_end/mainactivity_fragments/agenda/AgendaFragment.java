@@ -272,6 +272,9 @@ public class AgendaFragment extends Fragment {
     }
 
     private void fillRecipes(View root) throws JSONException {
+        breakfastInfos.clear();
+        lunchInfos.clear();
+        dinnerInfos.clear();
         String url = getString(R.string.server_url) + "/planning?user_id=" + NetworkSingleton.getInstance(activity).getUserId() + "&date=" +
                 NetworkSingleton.getInstance(activity).getAgendaCurrentYear() + "-" +
                 NetworkSingleton.getInstance(activity).getAgendaCurrentMonth() + "-" +
