@@ -52,25 +52,25 @@ public class ShoppingListAdapter extends RecyclerView.Adapter {
         String quantityType = null;
 
         try {
+            if(items.get(position)!=null){
+                itemQuantity = items.get(position).getInt("quantity");
 
-            itemQuantity = items.get(position).getInt("quantity");
+                JSONObject articleDetails = items.get(position).getJSONObject("article_details");
+                articleQuantity = articleDetails.getDouble("quantity");
+                articlePrice = articleDetails.getDouble("price");
 
-            JSONObject articleDetails = items.get(position).getJSONObject("article_details");
-            articleQuantity = articleDetails.getDouble("quantity");
-            articlePrice = articleDetails.getDouble("price");
+                JSONObject product = articleDetails.getJSONObject("product");
+                productName = product.getString("name");
 
-            JSONObject product = articleDetails.getJSONObject("product");
-            productName = product.getString("name");
+                JSONObject brand = articleDetails.getJSONObject("brand");
+                brandName = brand.getString("name");
 
-            JSONObject brand = articleDetails.getJSONObject("brand");
-            brandName = brand.getString("name");
+                JSONObject market = articleDetails.getJSONObject("market");
+                marketName = market.getString("name");
 
-            JSONObject market = articleDetails.getJSONObject("market");
-            marketName = market.getString("name");
-
-            JSONObject quantityTypeObject = articleDetails.getJSONObject("quantity_type");
-            articleQuantityType = quantityTypeObject.getString("quantitytype_name");
-
+                JSONObject quantityTypeObject = articleDetails.getJSONObject("quantity_type");
+                articleQuantityType = quantityTypeObject.getString("quantitytype_name");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -27,6 +27,7 @@ import com.planeat.front_end.utils.NetworkSingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
@@ -114,11 +115,14 @@ public class ShoppingListCreationActivity extends AppCompatActivity {
         url+="&shoppinglist_start_date="+df.format(startDate.getYear())+"-"+df.format(startDate.getMonth())+"-"+df.format(startDate.getDayOfMonth());
         url+="&shoppinglist_end_date="+df.format(endDate.getYear())+"-"+df.format(endDate.getMonth())+"-"+df.format(endDate.getDayOfMonth());
         url+="&lowest_price="+lowestPricesRadio.isChecked();
-        url+="&shop="+marketEditText.getText().toString().toUpperCase();
+        if(lowestPricesRadio.isChecked())
+            url+="&shop";
+        else
+            url+="&shop="+marketEditText.getText().toString().toUpperCase();
 
-        //Toast.makeText(getApplicationContext(),url,Toast.LENGTH_SHORT).show();
-
-        StringRequest generateShoppingListRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        //String url = getString(R.string.server_url)+"/shoppingLists/generate";
+        final String test= url;
+        StringRequest generateShoppingListRequest = new StringRequest(Request.Method.GET, url,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getApplicationContext(),"Shopping List created !",Toast.LENGTH_SHORT).show();
@@ -130,6 +134,7 @@ public class ShoppingListCreationActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(),"Shopping List creation failed ! error: "+error.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),test,Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -140,6 +145,19 @@ public class ShoppingListCreationActivity extends AppCompatActivity {
                 params.put("Authorization", "Bearer " + token);
                 return params;
             }
+            /*
+            @Override
+            public Map<String, String> getParams() {
+                HashMap mParams = new HashMap<String, String>();
+                DecimalFormat df = new DecimalFormat("00");
+                mParams.put("user_id", userId);
+                mParams.put("shoppinglist_start_date", df.format(startDate.getYear())+"-"+df.format(startDate.getMonth())+"-"+df.format(startDate.getDayOfMonth()));
+                mParams.put("shoppinglist_end_date", df.format(endDate.getYear())+"-"+df.format(endDate.getMonth())+"-"+df.format(endDate.getDayOfMonth()));
+                mParams.put("lowest_price", lowestPricesRadio.isChecked());
+                mParams.put("shop", marketEditText.getText().toString().toUpperCase());
+                return mParams;
+            }
+            */
         };
         NetworkSingleton.getInstance(getApplicationContext()).addToRequestQueue(generateShoppingListRequest);
     }
