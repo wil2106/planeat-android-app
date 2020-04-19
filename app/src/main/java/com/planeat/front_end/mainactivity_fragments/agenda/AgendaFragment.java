@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.planeat.front_end.R;
 import com.planeat.front_end.utils.AgendaRecyclerViewAdapter;
 import com.planeat.front_end.utils.NetworkSingleton;
@@ -55,6 +58,9 @@ public class AgendaFragment extends Fragment {
     Activity activity;
     String token;
     SharedPreferences sharedPreferences;
+    final List<JSONObject> breakfastInfos = new ArrayList(); // we fill the list that will be used by the recyclerview containing the info
+    final List<JSONObject> lunchInfos = new ArrayList();
+    final List<JSONObject> dinnerInfos = new ArrayList();
 
     @Override
     public void onAttach(Context context) {
@@ -266,9 +272,6 @@ public class AgendaFragment extends Fragment {
     }
 
     private void fillRecipes(View root) throws JSONException {
-        final List<JSONObject> breakfastInfos = new ArrayList(); // we fill the list that will be used by the recyclerview containing the info
-        final List<JSONObject> lunchInfos = new ArrayList();
-        final List<JSONObject> dinnerInfos = new ArrayList();
         String url = getString(R.string.server_url) + "/planning?user_id=" + NetworkSingleton.getInstance(activity).getUserId() + "&date=" +
                 NetworkSingleton.getInstance(activity).getAgendaCurrentYear() + "-" +
                 NetworkSingleton.getInstance(activity).getAgendaCurrentMonth() + "-" +
@@ -312,8 +315,11 @@ public class AgendaFragment extends Fragment {
                         @Override
                         public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                             int position = target.getAdapterPosition();
+                            //LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            //PopupWindow pw = new PopupWindow(inflater.inflate(R.layout.delete_planning_popup, null, false),100,100, true);
+                            //pw.showAtLocation(activity.findViewById(R.id.agendaParentLayout), Gravity.CENTER, 0, 0);
                             try {
-                                deleteRecipe(0, breakfastInfos, position);
+                                deleteRecipe(breakfastInfos, position);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -332,7 +338,7 @@ public class AgendaFragment extends Fragment {
                         public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                             int position = target.getAdapterPosition();
                             try {
-                                deleteRecipe(1, lunchInfos, position);
+                                deleteRecipe(lunchInfos, position);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -351,7 +357,7 @@ public class AgendaFragment extends Fragment {
                         public void onSwiped(@NonNull RecyclerView.ViewHolder target, int direction) {
                             int position = target.getAdapterPosition();
                             try {
-                                deleteRecipe(2, dinnerInfos, position);
+                                deleteRecipe(dinnerInfos, position);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -381,12 +387,12 @@ public class AgendaFragment extends Fragment {
         NetworkSingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(planningGetRequest);
     }
 
-    private void deleteRecipe(final int meal_type, List<JSONObject> mealInfos, final int position) throws JSONException {
+    private void deleteRecipe(List<JSONObject> mealInfos, final int position) throws JSONException {
         String url = getString(R.string.server_url) + "/planning?meal_id=" + mealInfos.get(position).getJSONArray("planning").getJSONObject(0).getString("meal_id");
-        JsonArrayRequest deleteRequest = new JsonArrayRequest(Request.Method.DELETE, url, null, new Response.Listener<JSONArray>() {
+        JsonObjectRequest deleteRequest = new JsonObjectRequest(Request.Method.DELETE, url, null, new Response.Listener<JSONObject>() {
 
             @Override
-            public void onResponse(JSONArray response) {
+            public void onResponse(JSONObject response) {
                 // do nothing
             }
         }, new Response.ErrorListener() {
